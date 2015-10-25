@@ -12,3 +12,8 @@
 hs_err_pid*
 /drools-kie-ci-example/my-first-drools-kjar/target/
 /drools-kie-ci-example/drools-kjar-ci-test/target/
+/drools-rest-swarm/drools-jax-rs/target/
+/drools-rest-swarm/my-first-drools-kjar/target/
+/drools-rest-swarm/drools-user-kjar/target/
+/drools-rest-swarm/drools-user-model/target/
+/drools-rest-swarm/target/
