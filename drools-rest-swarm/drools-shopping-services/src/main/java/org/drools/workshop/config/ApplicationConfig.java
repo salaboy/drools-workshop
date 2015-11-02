@@ -20,11 +20,13 @@ public class ApplicationConfig extends Application  {
         return resources;
     }
 
+    
     /**
      * Do not modify addRestResourceClasses() method. It is automatically
      * populated with all resources defined in the project. If required, comment
      * out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(org.drools.workshop.endpoint.exception.HttpStatusExceptionHandler.class);
     }
 }

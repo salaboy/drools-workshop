@@ -1,0 +1,27 @@
+package org.drools.workshop;
+import org.drools.workshop.model.*;
+import java.util.ArrayList;
+
+rule "Item Added"
+    when
+        $i: Item()
+    then
+        System.out.println(">> New Item Added: "+ $i);
+end
+
+rule "Shopping Cart too big"
+    when
+        $i: Item()
+        $l: ArrayList(size > 5) from collect(Item())
+    then
+        System.out.println(">> Too big: "+ $l.size());
+        System.out.println(">> Removing Item: "+$i);
+        retract($i);
+end
+
+rule "Shopping Cart - Current total"
+    when
+        $total: Double() from accumulate(Item($price: price), sum($price))
+    then
+        System.out.println(">> The current total is: "+ $total);
+end
