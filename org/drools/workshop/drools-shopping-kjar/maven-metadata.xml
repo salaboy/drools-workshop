@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.drools.workshop</groupId>
+  <artifactId>drools-shopping-kjar</artifactId>
+  <versioning>
+    <versions>
+      <version>1.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20151103174613</lastUpdated>
+  </versioning>
+</metadata>
