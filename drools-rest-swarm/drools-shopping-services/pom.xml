@@ -19,11 +19,11 @@
         <kie.version>6.3.0.Final</kie.version>
         <junit.version>4.11</junit.version>
         <cdi.version>1.2</cdi.version>
-        <version.wildfly-swarm>1.0.0.Alpha4</version.wildfly-swarm>
+        <version.wildfly-swarm>1.0.0.Alpha5</version.wildfly-swarm>
         <docker.from>jboss/base-jdk:8</docker.from> 
         <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
         <docker.assemblyDescriptorRef>artifact</docker.assemblyDescriptorRef>
-        <docker.image>salaboy/drools-scopes:latest</docker.image>
+        <docker.image>salaboy/drools-shopping-services:latest</docker.image>
     </properties>
     
 
