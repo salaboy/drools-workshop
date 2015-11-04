@@ -1,0 +1,36 @@
+package org.drools.workshop.cep
+
+import java.util.List;
+import org.drools.workshop.cepmodel.BlackListedClient;
+import org.drools.workshop.cepmodel.Client;
+import org.drools.workshop.cepmodel.FraudSuspicion;
+import org.drools.workshop.cepmodel.Transaction;
+
+declare Transcaction
+  @role ( event )
+  @timestamp ( transactionTime )
+  @expires ( 30m )
+end
+
+declare FraudSuspicion
+  client: Client
+  transactions: List
+end
+
+rule "too many transactions from same client in last half hour"
+  when
+    Transaction($c: client)
+    $list: List(size > 10) from collect(
+        Transcaction(client == $c) over window:time(30m)
+    )
+  then
+    insertLogical(new FraudSuspicion($c, $list));
+end
+
+rule "Audit suspicious cases from blacklisted clients"
+  when
+    $fraudSuspicion: FraudSuspicion($c: client)
+    BlackListedClient(client == $c)
+  then
+    channels["auditing"].send($fraudSuspicion);
+end
