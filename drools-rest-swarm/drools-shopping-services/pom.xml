@@ -132,7 +132,7 @@
                                         <arg>java</arg>
                                         <arg>-Dkie.maven.settings.custom=/opt/wildfly-swarm/settings.xml</arg>
                                         <arg>-jar</arg>
-                                        <arg>/opt/wildfly-swarm/drools-scopes.jar</arg>
+                                        <arg>/opt/wildfly-swarm/drools-shopping-services.jar</arg>
                                        
                                     </exec>
                                 </entryPoint>
@@ -142,9 +142,9 @@
                                             <dependencySet>
                                                 <useProjectAttachments>true</useProjectAttachments>
                                                 <includes>
-                                                    <include>org.drools.workshop:drools-scopes:jar:swarm</include>
+                                                    <include>org.drools.workshop:drools-shopping-services:jar:swarm</include>
                                                 </includes>
-                                                <outputFileNameMapping>drools-scopes.jar</outputFileNameMapping>
+                                                <outputFileNameMapping>drools-shopping-services.jar</outputFileNameMapping>
                                             </dependencySet>
                                         </dependencySets>
                                         <fileSets>
@@ -173,7 +173,7 @@
                                         <!-- Change this to 200 when the URL above hits an endpoint -->
                                         <status>200</status>
                                     </http>
-                                    <time>120000</time>
+                                    <time>150000</time>
                                 </wait>
                                 <log>
                                     <color>yellow</color>

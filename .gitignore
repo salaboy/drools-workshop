@@ -10,16 +10,4 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-/drools-kie-ci-example/my-first-drools-kjar/target/
-/drools-kie-ci-example/drools-kjar-ci-test/target/
-/drools-rest-swarm/drools-jax-rs/target/
-/drools-rest-swarm/my-first-drools-kjar/target/
-/drools-rest-swarm/drools-user-kjar/target/
-/drools-rest-swarm/drools-user-model/target/
-/drools-rest-swarm/target/
-/drools-rest-swarm/drools-jax-rs copy/target/
-/drools-rest-swarm/drools-user-kjar copy/target/
-/drools-rest-swarm/drools-shopping-kjar/target/
-/drools-rest-swarm/drools-user-model copy/target/
-/drools-rest-swarm/drools-shopping-model/target/
-/drools-rest-swarm/drools-shopping-services/target/
+target/

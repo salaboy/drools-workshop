@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <groupId>org.drools.workshop</groupId>
+    <artifactId>kie-server-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>  
+    <packaging>pom</packaging>
+    <name>Kie Server Parent</name>
+    <description>Kie Server Build Modules</description>
+
+    <modules>
+        <module>kie-server-docker</module>
+        <module>kie-server-docker-build</module>
+        <module>kie-server-cmd-marshaller</module>
+    </modules>
+  
+    <properties>
+        <!-- Define the version of the JBoss BOMs we want to import to specify tested stacks. -->
+        <kie.version>6.3.0.Final</kie.version>
+        <java.min.version>1.8</java.min.version>
+        <maven.min.version>3.2.3</maven.min.version>
+        <version.wildfly>9.0.0.Beta2</version.wildfly>
+        <github.global.server>github</github.global.server>
+        <version.wildfly-swarm>1.0.0.Alpha5</version.wildfly-swarm>
+    </properties>
+    
+     
+    <prerequisites>
+        <maven>${maven.min.version}</maven>
+    </prerequisites>
+    
+  
+    <dependencyManagement>
+        <dependencies>
+            <!-- JBoss distributes a complete set of Java EE 7 APIs including
+            a Bill of Materials (BOM). A BOM specifies the versions of a "stack" (or 
+            a collection) of artifacts. We use this here so that we always get the correct 
+            versions of artifacts. Here we use the jboss-javaee-7.0-with-hibernate stack
+            (you can read this as the JBoss stack of the Java EE Web Profile 6 APIs with 
+            extras from the Hibernate family of projects) -->
+            <dependency>
+                <groupId>org.wildfly.bom</groupId>
+                <artifactId>jboss-javaee-7.0-with-all</artifactId>
+                <version>${version.wildfly}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    
+    
+    <build>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            
+        </plugins>
+    </build>
+</project>

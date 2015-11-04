@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+	<parent>
+    <groupId>org.drools.workshop</groupId>
+    <artifactId>kie-server-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>  
+    </parent>
+    <artifactId>kie-server-xx-docker-build</artifactId>
+
+    <packaging>pom</packaging>
+    <name>KIE Execution Server Maven Docker Build</name>
+
+    <properties>
+        <kie.docker.kie-server.jee7.artifactId>kie-server</kie.docker.kie-server.jee7.artifactId>
+        <kie.docker.kie-server-base.path>${project.build.directory}/docker-base</kie.docker.kie-server-base.path>
+        <kie.docker.kie-server.wildfly8.repositoryPath>${project.build.directory}</kie.docker.kie-server.wildfly8.repositoryPath>
+    
+    </properties>
+  
+    <dependencies>
+
+   
+
+        <!-- The kie-server WAR dependency for JEE7 based containers. -->
+        <dependency>
+            <groupId>org.kie.server</groupId>
+            <artifactId>kie-server</artifactId>
+            <version>${kie.version}</version>
+            <classifier>ee7</classifier>
+            <type>war</type>
+        </dependency>
+
+   
+        <!-- The kie-server-base distribution files. -->
+        <dependency>
+            <groupId>org.drools.workshop</groupId>
+            <artifactId>kie-server-xx-docker</artifactId>
+            <version>${project.version}</version>
+            <type>zip</type>
+            <classifier>docker-base</classifier>
+        </dependency>
+    
+    </dependencies>
+
+
+    <build>
+        <plugins>
+
+            <!-- Unpack kie-server-base distribution files for the docker images. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.drools.workshop</groupId>
+                                    <artifactId>kie-server-xx-docker</artifactId>
+                                    <type>zip</type>
+                                    <classifier>docker-base</classifier>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${kie.docker.kie-server-base.path}</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+      
+            <!-- Generate site report for dependencies for including it into the generated docker image. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <finalName>kie-server</finalName>
+                    <jarOutputDirectory>${project.build.directory}</jarOutputDirectory>
+                    <reportPlugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-project-info-reports-plugin</artifactId>
+                            <reports>
+                                <report>dependencies</report>
+                            </reports>
+                        </plugin>
+                    </reportPlugins>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>generate-report</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Assemble the dockerfile and other stuff for building the docker image using these files as sources.
+            Used for filtering some properties in Dockerfiles before using them for image building. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-dockerfiles</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptors>
+                        <descriptor>${kie.docker.kie-server-base.path}/assembly/docker-assembly.xml</descriptor>
+                    </descriptors>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jolokia</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.13.2</version>
+                <configuration>
+                    <!-- Global configuration. -->
+                    <!--dockerHost>${docker.daemon.rest.url}</dockerHost-->
+                    <!--registry>${docker.registry}</registry-->
+                    <!-- Although no authentication on registry, set empty values. If not, plugin push goal fails. -->
+                    <!--          <authConfig>
+                      <username></username>
+                      <password></password>
+                    </authConfig>-->
+                    <useColor>true</useColor>
+                    <logDate>default</logDate>
+                    <verbose>true</verbose>
+
+                    <!-- KIE Images. -->
+                    <images>
+
+                        <!-- KIE Server latest SNAPSHOT & Wildfly 8.1.0.Final. -->
+                        <image>
+                            <name>salaboy/drools-workshop-kie-server</name>
+                            <alias>kie-server-drools-workshop</alias>
+                            <build>
+                                <assembly>
+                                    <dockerFileDir>${project.build.directory}/${project.build.finalName}-docker/wildfly</dockerFileDir>
+                                    <descriptor>${kie.docker.kie-server-base.path}/assembly/assembly-kie-server-wildfly8.xml</descriptor>
+                                </assembly>
+                            </build>
+                            <run>
+                                <namingStrategy>alias</namingStrategy>
+                                <env>
+                                    <KIE_CONNECTION_URL>"jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"</KIE_CONNECTION_URL>
+                                    <KIE_CONNECTION_DRIVER>h2</KIE_CONNECTION_DRIVER>
+                                    <KIE_CONNECTION_USER>sa</KIE_CONNECTION_USER>
+                                    <KIE_CONNECTION_PASSWORD>sa</KIE_CONNECTION_PASSWORD>
+                                    <KIE_CONNECTION_DATABASE>kie</KIE_CONNECTION_DATABASE>
+                 
+                  
+                                </env>
+                                <ports>
+                                    <port>kieserver.wf8.http.port:8080</port>
+                                </ports>
+                                <wait>
+                                    <log>Deployed "kie-server\.war"</log>
+                                    <time>120000</time>
+                                </wait>
+                                <log>
+                                    <prefix>DEMO</prefix>
+                                    <date>ISO8601</date>
+                                    <color>blue</color>
+                                </log>
+                            </run>
+                        </image>
+
+           
+
+                    </images>
+                </configuration>
+
+                <executions>
+
+<!--                    <execution>
+                        <id>kieserver-build</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>-->
+
+                    <!--execution>
+                      <id>kieserver-start</id>
+                      <phase>post-integration-test</phase>
+                      <goals>
+                        <goal>start</goal>
+                      </goals>
+                    </execution-->
+
+                </executions>
+
+            </plugin>
+
+        </plugins>
+    </build>
+     <repositories>
+        <repository>
+            <id>jboss</id>
+            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+</project>

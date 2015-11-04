@@ -1,0 +1,19 @@
+<component>
+
+  <files>
+
+    <!-- The current project site report. -->
+    <file>
+      <source>${project.build.directory}/kie-server-site.jar</source>
+      <outputDirectory>./site</outputDirectory>
+      <destName>kie-server-site.jar</destName>
+    </file>
+    <file>
+      <source>${kie.docker.kie-server-base.path}/assembly/site-web.xml</source>
+      <outputDirectory>./site/WEB-INF</outputDirectory>
+      <destName>web.xml</destName>
+    </file>
+
+  </files>
+  
+</component>

@@ -15,7 +15,7 @@
     <url>http://salaboy.com</url>
 
        <properties>
-        <java.min.version>1.8</java.min.version>
+        <java.min.version>1.7</java.min.version>
         <maven.min.version>3.2.3</maven.min.version>
         <github.global.server>github</github.global.server>
     </properties>
@@ -49,8 +49,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>

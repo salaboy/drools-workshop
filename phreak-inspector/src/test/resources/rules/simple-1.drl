@@ -1,0 +1,68 @@
+package simple
+
+rule "Simple Rule 1"
+when
+    String()
+then
+    System.out.println("Fired");
+end
+
+rule "Simple Rule 2"
+when
+    String( this == "Hello")
+then
+    System.out.println("Fired");
+end
+
+rule "Simple Rule 3"
+when
+    String()
+    Integer()
+then
+    System.out.println("Fired");
+end
+
+rule "Simple Rule 4"
+when
+    Number($i:intValue)
+    Integer(this == $i)
+then
+    System.out.println("Fired");
+end
+
+rule "Simple Rule 5"
+when
+    not String()
+then
+    System.out.println("Fired");
+end
+
+rule "Simple Rule 6"
+when
+    not String()
+    Number()
+then
+    System.out.println("Fired");
+end
+
+rule "Simple Rule 7"
+when
+    Number()
+    Integer(this > 0) from accumulate(String(), count(1))
+then
+    System.out.println("Fired");
+end
+
+
+rule "Simple Rule 8"
+when
+    Number()
+    ?getStrings()
+then
+    System.out.println("Fired");
+end
+
+
+query getStrings()
+    $s: String()
+end
