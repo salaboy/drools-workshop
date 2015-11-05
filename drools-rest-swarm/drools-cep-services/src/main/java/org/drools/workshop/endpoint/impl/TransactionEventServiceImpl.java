@@ -1,7 +1,9 @@
 package org.drools.workshop.endpoint.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -15,6 +17,8 @@ import org.drools.workshop.endpoint.api.TransactionEventService;
 import org.drools.workshop.endpoint.exception.BusinessException;
 import org.kie.api.cdi.KReleaseId;
 import org.kie.api.cdi.KSession;
+import org.kie.api.event.rule.DebugAgendaEventListener;
+import org.kie.api.event.rule.DebugRuleRuntimeEventListener;
 import org.kie.api.runtime.Channel;
 import org.kie.api.runtime.KieSession;
 
@@ -30,11 +34,13 @@ public class TransactionEventServiceImpl implements TransactionEventService, Cha
     @KReleaseId(groupId = "org.drools.workshop", artifactId = "drools-cep-kjar", version = "1.0-SNAPSHOT")
     private KieSession kSession;
     
-    private List<FraudSuspicion> detections = new ArrayList<FraudSuspicion>();
+    private Set<FraudSuspicion> detections = new HashSet<FraudSuspicion>();
 
     @PostConstruct
     public void after() {
     	kSession.registerChannel("auditing", this);
+    	kSession.addEventListener(new DebugAgendaEventListener(System.out));
+    	kSession.addEventListener(new DebugRuleRuntimeEventListener(System.out));
     }
     
     public TransactionEventServiceImpl() {
@@ -54,7 +60,7 @@ public class TransactionEventServiceImpl implements TransactionEventService, Cha
     
     @Override
     public List<FraudSuspicion> getFraudSuspicions() throws BusinessException {
-    	return detections;
+    	return new ArrayList<FraudSuspicion>(detections);
     }
 
 	@Override
