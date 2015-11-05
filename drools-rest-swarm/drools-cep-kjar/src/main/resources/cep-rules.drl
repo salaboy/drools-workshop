@@ -12,11 +12,6 @@ declare Transcaction
   @expires ( 30m )
 end
 
-declare FraudSuspicion
-  client: Client
-  transactions: List
-end
-
 rule "too many transactions from same client in last half hour"
   when
     Transaction($cname: client.name)
