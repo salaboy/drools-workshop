@@ -6,7 +6,7 @@ import org.drools.workshop.cepmodel.Client;
 import org.drools.workshop.cepmodel.FraudSuspicion;
 import org.drools.workshop.cepmodel.Transaction;
 
-declare Transcaction
+declare Transaction
   @role ( event )
   @timestamp ( transactionTime )
   @expires ( 30m )
@@ -14,9 +14,9 @@ end
 
 rule "too many transactions from same client in last half hour"
   when
-    Transaction($cname: client.name)
+    Transaction($c: client, $cname: client.name)
     $list: List(size > 10) from collect(
-        Transcaction(client.name == $cname) over window:time(30m)
+        Transaction(client.name == $cname) over window:time(30m)
     )
   then
     insertLogical(new FraudSuspicion($c, $list));

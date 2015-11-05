@@ -26,8 +26,8 @@ import org.kie.api.runtime.KieSession;
 public class TransactionEventServiceImpl implements TransactionEventService, Channel {
 
     @Inject
+    @KSession("cepRT")
     @KReleaseId(groupId = "org.drools.workshop", artifactId = "drools-cep-kjar", version = "1.0-SNAPSHOT")
-    @KSession(name = "cepRT")
     private KieSession kSession;
     
     private List<FraudSuspicion> detections = new ArrayList<FraudSuspicion>();
@@ -43,11 +43,13 @@ public class TransactionEventServiceImpl implements TransactionEventService, Cha
     @Override
     public void addTransaction(Transaction event) throws BusinessException {
     	kSession.insert(event);
+    	kSession.fireAllRules();
     }
     
     @Override
     public void blacklist(String name) throws BusinessException {
     	kSession.insert(new BlackListedClient(new Client(name)));
+    	kSession.fireAllRules();
     }
     
     @Override
