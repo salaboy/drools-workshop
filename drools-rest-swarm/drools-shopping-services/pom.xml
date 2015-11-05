@@ -161,14 +161,6 @@
                                     <!-- Map container port 8080 to a dynamical port -->
                                     <port>${swarm.port}:8080</port>
                                 </ports>
-                                <wait>
-                                    <http>
-                                        <url>http://${docker.host.address}:${swarm.port}</url>
-                                        <!-- Change this to 200 when the URL above hits an endpoint -->
-                                        <status>200</status>
-                                    </http>
-                                    <time>150000</time>
-                                </wait>
                                 <log>
                                     <color>yellow</color>
                                     <prefix>SWARM</prefix>

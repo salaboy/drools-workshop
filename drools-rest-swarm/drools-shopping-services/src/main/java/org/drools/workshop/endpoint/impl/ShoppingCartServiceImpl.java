@@ -8,13 +8,18 @@ import java.util.Set;
 import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import org.drools.core.RuleBaseConfiguration;
 import org.drools.workshop.endpoint.api.ShoppingCartService;
 import org.drools.workshop.endpoint.exception.BusinessException;
 import org.drools.workshop.model.Item;
+import org.kie.api.KieBase;
 import org.kie.api.cdi.KReleaseId;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.ObjectFilter;
 import org.kie.api.runtime.rule.FactHandle;
+import org.kie.api.runtime.rule.QueryResults;
+import org.kie.api.runtime.rule.QueryResultsRow;
 
 /**
  *
@@ -33,16 +38,19 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public String newShoppingCart() throws BusinessException{
+    public String newShoppingCart() throws BusinessException {
         String cartId = UUID.randomUUID().toString();
-        KieSession kSession = kContainer.newKieSession();
+        RuleBaseConfiguration conf = new RuleBaseConfiguration();
+        conf.setAssertBehaviour(RuleBaseConfiguration.AssertBehaviour.EQUALITY);
+        KieBase kBase = kContainer.newKieBase(conf);
+        KieSession kSession = kBase.newKieSession();
         shoppingCarts.put(cartId, kSession);
         return cartId;
     }
 
     @Override
     public void addItem(String id, Item item) throws BusinessException {
-        if(shoppingCarts.get(id) == null){
+        if (shoppingCarts.get(id) == null) {
             throw new BusinessException("The cart Id is not valid!");
         }
         shoppingCarts.get(id).insert(item);
@@ -51,16 +59,22 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void removeItem(String id, Item item) throws BusinessException {
-        if(shoppingCarts.get(id) == null){
+        if (shoppingCarts.get(id) == null) {
             throw new BusinessException("The cart Id is not valid!");
         }
         FactHandle factHandle = shoppingCarts.get(id).getFactHandle(item);
         shoppingCarts.get(id).delete(factHandle);
+        QueryResults results = shoppingCarts.get(id).getQueryResults("Get All Cat Items", item);
+        String[] keys = results.getIdentifiers();
+        for(QueryResultsRow row : results){
+            shoppingCarts.get(id).delete(row.getFactHandle(keys[0]));
+        }
+        shoppingCarts.get(id).fireAllRules();
     }
 
     @Override
     public void checkout(String id) throws BusinessException {
-        if(shoppingCarts.get(id) == null){
+        if (shoppingCarts.get(id) == null) {
             throw new BusinessException("The cart Id is not valid!");
         }
         System.out.println(">> Thanks for buying with us.");
@@ -74,7 +88,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void empty(String id) throws BusinessException {
-        if(shoppingCarts.get(id) == null){
+        if (shoppingCarts.get(id) == null) {
             throw new BusinessException("The cart Id is not valid!");
         }
         KieSession kSession = kContainer.newKieSession();
@@ -83,11 +97,19 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public List<Item> getItems(String id) throws BusinessException {
-        if(shoppingCarts.get(id) == null){
+        if (shoppingCarts.get(id) == null) {
             throw new BusinessException("The cart Id is not valid!");
         }
         List<Item> items = new ArrayList<Item>();
-        for (Object o : shoppingCarts.get(id).getObjects()) {
+        ObjectFilter filter = new ObjectFilter() {
+
+            @Override
+            public boolean accept(Object o) {
+                return o instanceof Item;
+            }
+
+        };
+        for (Object o : shoppingCarts.get(id).getObjects(filter)) {
             items.add((Item) o);
         }
         return items;
@@ -95,7 +117,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void removeShoppingCart(String id) throws BusinessException {
-        if(shoppingCarts.get(id) == null){
+        if (shoppingCarts.get(id) == null) {
             throw new BusinessException("The cart Id is not valid!");
         }
         shoppingCarts.get(id).dispose();
@@ -106,8 +128,5 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public Set<String> getShoppingCarts() throws BusinessException {
         return shoppingCarts.keySet();
     }
-    
-    
-    
 
 }
