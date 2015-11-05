@@ -19,9 +19,9 @@ end
 
 rule "too many transactions from same client in last half hour"
   when
-    Transaction($c: client)
+    Transaction($cname: client.name)
     $list: List(size > 10) from collect(
-        Transcaction(client == $c) over window:time(30m)
+        Transcaction(client.name == $cname) over window:time(30m)
     )
   then
     insertLogical(new FraudSuspicion($c, $list));
@@ -29,8 +29,8 @@ end
 
 rule "Audit suspicious cases from blacklisted clients"
   when
-    $fraudSuspicion: FraudSuspicion($c: client)
-    BlackListedClient(client == $c)
+    $fraudSuspicion: FraudSuspicion($cname: client.name)
+    BlackListedClient(client.name == $cname)
   then
     channels["auditing"].send($fraudSuspicion);
 end

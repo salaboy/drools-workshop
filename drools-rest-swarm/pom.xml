@@ -13,12 +13,13 @@
     <modules>
         <module>drools-user-model</module>
         <module>drools-user-kjar</module>
+	<module>drools-cep-model</module>
+	<module>drools-cep-kjar</module>
         <module>drools-jax-rs</module>
 	<module>drools-shopping-model</module>
 	<module>drools-shopping-kjar</module>
 	<module>drools-shopping-services</module>
-	<module>drools-cep-model</module>
-	<module>drools-cep-kjar</module>
+        <module>drools-cep-services</module>
     </modules>
   
     <repositories>
