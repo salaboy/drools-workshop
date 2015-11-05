@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.drools.workshop</groupId>
+  <artifactId>drools-cep-kjar</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20151105.100522</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20151105100522</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>1.0-20151105.100522-1</value>
+        <updated>20151105100522</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>1.0-20151105.100522-1</value>
+        <updated>20151105100522</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
