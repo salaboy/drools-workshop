@@ -1,4 +1,4 @@
-# Drools-workshop
+# Drools Workshop
 Here are some projects for a basic to intermediate Drools Workshop
 
 - my-first-drools-project: basic project created from a maven archetype, for more info about how to create the project look here: http://salaboy.com/2015/10/20/back-to-the-basics-getting-started-with-drools-6-3-0-final/ and for tests using arquillian look here: http://salaboy.com/2015/10/21/back-to-the-basics-2-testing-rules-with-arquillian-basics/
