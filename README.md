@@ -1,4 +1,4 @@
-# drools-workshop
+# Drools-workshop
 Here are some projects for a basic to intermediate Drools Workshop
 
 - my-first-drools-project: basic project created from a maven archetype, for more info about how to create the project look here: http://salaboy.com/2015/10/20/back-to-the-basics-getting-started-with-drools-6-3-0-final/ and for tests using arquillian look here: http://salaboy.com/2015/10/21/back-to-the-basics-2-testing-rules-with-arquillian-basics/
@@ -12,14 +12,15 @@ Here are some projects for a basic to intermediate Drools Workshop
 - Phreak Inspector: very simple project to draw the RETE network using the Graphviz language
 
 
-Building the projects (To avoid big downloads on the workshops)
-- Requirements:
-  - JDK 1.7 + 
-  - Maven 3.2.3 + 
-  - Docker (https://docs.docker.com)
-  - An IDE will be good
+# Building the projects (To avoid big downloads on the workshops)
+  # Requirements:
+    - JDK 1.7 + 
+    - Maven 3.2.3 + 
+    - Git tools (https://git-scm.com/downloads)
+    - Docker (https://docs.docker.com)
+    - An IDE will be good
 
-- git clone https://github.com/Salaboy/drools-workshop.git
+- Clone the projects to your local environment: git clone https://github.com/Salaboy/drools-workshop.git
 - cd drools-workshop/
   - cd my-first-drools-project/
     - mvn clean install
