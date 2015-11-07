@@ -49,6 +49,7 @@ Here are some projects for a basic to intermediate Drools Workshop
     - cd kie-server-docker-build/
       - mvn clean install docker:build (require having docker installed and being in a docker configured terminal)
       - cd ..
+    - cd ..
   - cd phreak-inspector/
     - mvn clean install
 
