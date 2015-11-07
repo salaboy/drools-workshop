@@ -30,7 +30,12 @@ Here are some projects for a basic to intermediate Drools Workshop
     - mvn clean install
     - cd ..
   - cd drools-kie-ci-example/
-    - mvn clean install
+    - cd my-first-drools-kjar/
+      - mvn clean install   
+      - cd ..
+    - cd drools-kjar-ci-test/
+      - mvn clean install
+      - cd ..
     - cd ..
   - drools-rest-swarm:
     - mvn clean install
