@@ -1,0 +1,48 @@
+package org.drools.workshop;
+
+import org.drools.workshop.model.*;
+import org.drools.workshop.model.Person.*;
+
+rule "There is a person, let me know"
+    when
+        $p: Person()
+    then
+        System.out.println(" >>> there is a new Person: "+$p.toString());
+end
+
+/*
+rule "There is an adult, let me know"
+    when
+        $p: Person( age >= 18 )
+    then
+        System.out.println(" >>> there is a new Adult: "+$p.toString());
+end
+
+rule "There is an adult from London, let me know"
+    when
+        $p: Person( age >= 18, city == "London" )
+    then
+        System.out.println(" >>> there is a new Adult from London: "+$p.toString());
+end
+
+rule "There is a Male adult from London, let me know"
+    when
+        $p: Person( age >= 18, city == "London", gender == Gender.MALE )
+    then
+        System.out.println(" >>> there is a new Male Adult from London: "+$p.toString());
+end
+
+rule "There is a Female adult from London, let me know"
+    when
+        $p: Person( age >= 18, city == "London", gender == Gender.FEMALE )
+    then
+        System.out.println(" >>> there is a new Female Adult from London: "+$p.toString());
+end
+
+rule "There is Student from Westminster univ, let me know"
+    when
+        $s: Student( age >= 18, city == "London", university == "Westminster" )
+    then
+        System.out.println(" >>> there is a new Student from Westminster univ: "+$s.toString());
+end
+*/
