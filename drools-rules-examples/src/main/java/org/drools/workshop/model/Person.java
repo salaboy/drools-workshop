@@ -10,8 +10,11 @@ package org.drools.workshop.model;
  * @author salaboy
  */
 public class Person {
-    public enum Gender{ MALE, FEMALE};
-    
+
+    public enum Gender {
+        MALE, FEMALE
+    };
+
     private String name;
     private int age;
     private String email;
@@ -28,7 +31,6 @@ public class Person {
         this.city = city;
         this.gender = gender;
     }
-
 
     public String getName() {
         return name;
@@ -74,8 +76,5 @@ public class Person {
     public String toString() {
         return "Person{" + "name=" + name + ", age=" + age + ", email=" + email + ", city=" + city + ", gender=" + gender + '}';
     }
-
-    
-    
 
 }

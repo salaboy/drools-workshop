@@ -5,13 +5,17 @@
  */
 package org.drools.workshop.model;
 
+import java.util.List;
+
 /**
  *
  * @author salaboy
  */
 public class Room {
+
     private String name;
     private int capacity;
+    private List<Person> persons;
 
     public Room() {
     }
@@ -37,10 +41,19 @@ public class Room {
         this.capacity = capacity;
     }
 
+    public List<Person> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(List<Person> persons) {
+        this.persons = persons;
+    }
+
     @Override
     public String toString() {
-        return "Room{" + "name=" + name + ", capacity=" + capacity + '}';
+        return "Room{" + "name=" + name + ", capacity=" + capacity + ", persons=" + persons + '}';
     }
+
     
-    
+
 }

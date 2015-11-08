@@ -29,7 +29,7 @@ public class PhreakInspectorTest {
 
         Map<Resource, ResourceType> resources = new LinkedHashMap<>();
 
-        resources.put(ResourceFactory.newClassPathResource("person-rules.drl"), ResourceType.DRL);
+        resources.put(ResourceFactory.newClassPathResource("rules04/accumulation-rules.drl"), ResourceType.DRL);
 
         PhreakInspector inspector = new PhreakInspector();
 

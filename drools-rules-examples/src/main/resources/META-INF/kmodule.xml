@@ -1,2 +1,17 @@
 <kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <kbase name="rules01" packages="rules01"> 
+        <ksession name="rules01KSession"/>
+    </kbase>
+    <kbase name="rules02" packages="rules02"> 
+        <ksession name="rules02KSession"/>
+    </kbase>
+    <kbase name="rules03" packages="rules03"> 
+        <ksession name="rules03KSession"/>
+    </kbase>
+    <kbase name="rules04" packages="rules04"> 
+        <ksession name="rules04KSession"/>
+    </kbase>
+    <kbase name="rules05" packages="rules05"> 
+        <ksession name="rules05KSession"/>
+    </kbase>
 </kmodule>

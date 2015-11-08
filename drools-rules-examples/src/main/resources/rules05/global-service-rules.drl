@@ -1,0 +1,25 @@
+package org.drools.workshop;
+
+import org.drools.workshop.model.*;
+import org.drools.workshop.model.Person.*;
+import java.util.List;
+import org.drools.workshop.services.*;
+
+global List rulesFired;
+global MyService myService;
+
+rule "room and a person"
+    when
+        $r: Room()
+        $p: Person()
+    then
+        rulesFired.add(drools.getRule().getName());
+end
+
+rule "overcrowded room"
+    when
+        $r: Room()
+         List($amount: size > $r.getCapacity()) from collect (Person() from $r.getPersons())
+    then
+        myService.notify(drools.getRule().getName());
+end

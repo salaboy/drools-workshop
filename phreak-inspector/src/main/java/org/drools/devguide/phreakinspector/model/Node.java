@@ -20,6 +20,7 @@ public class Node {
         OBJECT_TYPE("OTN", "OTN","#00D1FF"),
         ALPHA("ALPHA", "A", "#F4F000"),
         BETA("BETA", "B", "#FFA858"),
+        FROM("FROM", "F", "#FFFFFF"),
         NOT("NOT", "B", "#E5E4E4"),
         QUERY_ELEMENT("QUERY_ELEMENT", "B", "#FF8FFC"),
         ACCUMULATE("ACCUMULATE", "B", "#FFA4A4"),

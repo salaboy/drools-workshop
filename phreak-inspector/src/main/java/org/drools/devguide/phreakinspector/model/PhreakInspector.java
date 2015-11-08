@@ -14,11 +14,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.apache.commons.io.IOUtils;
 import org.drools.core.base.ClassObjectType;
+import org.drools.core.base.dataproviders.MVELDataProvider;
 import org.drools.core.common.EmptyBetaConstraints;
 import org.drools.core.impl.KnowledgeBaseImpl;
 import org.drools.core.reteoo.AccumulateNode;
 import org.drools.core.reteoo.AlphaNode;
 import org.drools.core.reteoo.EntryPointNode;
+import org.drools.core.reteoo.FromNode;
 import org.drools.core.reteoo.JoinNode;
 import org.drools.core.reteoo.LeftInputAdapterNode;
 import org.drools.core.reteoo.LeftTupleSink;
@@ -29,13 +31,14 @@ import org.drools.core.reteoo.ObjectTypeNode;
 import org.drools.core.reteoo.QueryElementNode;
 import org.drools.core.reteoo.QueryTerminalNode;
 import org.drools.core.reteoo.Rete;
+import org.drools.core.reteoo.RightInputAdapterNode;
 import org.drools.core.reteoo.RuleTerminalNode;
 import org.drools.core.reteoo.Sink;
+import org.drools.core.rule.Declaration;
 import org.drools.core.rule.EntryPointId;
 import org.drools.core.rule.constraint.MvelConstraint;
 import org.drools.core.spi.BetaNodeFieldConstraint;
 import org.drools.core.spi.ObjectType;
-import org.drools.devguide.phreakinspector.model.Node;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;
 import org.kie.api.builder.Message;
@@ -51,22 +54,21 @@ import org.stringtemplate.v4.ST;
  * @author esteban
  */
 public class PhreakInspector {
-    
+
     private final Map<Integer, Node> nodes = new HashMap<>();
-    
-    public InputStream fromClassPathKieContainer(String kieBaseName) throws IOException{
+
+    public InputStream fromClassPathKieContainer(String kieBaseName) throws IOException {
         return this.fromKieBase(this.createContainer().getKieBase(kieBaseName));
     }
-    
-    public InputStream fromResources(Map<Resource, ResourceType> resources) throws IOException{
+
+    public InputStream fromResources(Map<Resource, ResourceType> resources) throws IOException {
         return this.fromKieBase(this.buildKieBase(resources));
     }
-    
-    
-    public InputStream fromKieBase(KieBase kb) throws IOException{
-        
+
+    public InputStream fromKieBase(KieBase kb) throws IOException {
+
         KnowledgeBaseImpl kbase = (KnowledgeBaseImpl) kb;
-        
+
         Rete rete = kbase.getRete();
 
         Map<EntryPointId, EntryPointNode> entryPointNodes = rete.getEntryPointNodes();
@@ -79,13 +81,12 @@ public class PhreakInspector {
             for (ObjectTypeNode otn : objectTypeNodes.values()) {
 
                 String nodeLabel = "";
-                if (otn.getObjectType() instanceof ClassObjectType){
-                    nodeLabel = ((ClassObjectType)otn.getObjectType()).getClassName();
+                if (otn.getObjectType() instanceof ClassObjectType) {
+                    nodeLabel = ((ClassObjectType) otn.getObjectType()).getClassName();
                 } else {
                     nodeLabel = otn.getObjectType().toString();
                 }
-                
-                
+
                 Node otNode = new Node(otn.getId(), nodeLabel, Node.TYPE.OBJECT_TYPE);
                 nodes.put(otNode.getId(), otNode);
                 epNode.addTargetNode(otNode.getId());
@@ -97,8 +98,7 @@ public class PhreakInspector {
 
             }
         }
-        
-        
+
 //        //Segments
 //        InternalWorkingMemory wm = ((InternalWorkingMemory)kbase.newStatefulKnowledgeSession());
 //        for (EntryPointNode value : entryPointNodes.values()) {
@@ -117,11 +117,9 @@ public class PhreakInspector {
 //                System.out.println("Found a memory");
 //            }
 //        }
-        
-        
         return this.generateGraphViz(nodes);
     }
-    
+
     private void visitObjectSink(ObjectSink oSink, Node parentNode) {
         this.visitSink(oSink, parentNode);
     }
@@ -134,6 +132,9 @@ public class PhreakInspector {
         if (sink instanceof LeftInputAdapterNode) {
             LeftInputAdapterNode lian = (LeftInputAdapterNode) sink;
             this.visitLeftInputAdapterNode(lian, parentNode);
+        } else if (sink instanceof RightInputAdapterNode) {
+            RightInputAdapterNode rian = (RightInputAdapterNode) sink;
+            this.visitRightInputAdapterNode(rian, parentNode);
         } else if (sink instanceof AlphaNode) {
             AlphaNode alpha = (AlphaNode) sink;
             this.visitAlphaNode(alpha, parentNode);
@@ -155,6 +156,9 @@ public class PhreakInspector {
         } else if (sink instanceof QueryTerminalNode) {
             QueryTerminalNode qt = (QueryTerminalNode) sink;
             this.visitQueryTerminalNode(qt, parentNode);
+        } else if (sink instanceof FromNode) {
+            FromNode from = (FromNode) sink;
+            this.visitFromNode(from, parentNode);
         } else {
             throw new UnsupportedOperationException(sink.toString());
         }
@@ -164,6 +168,13 @@ public class PhreakInspector {
         LeftTupleSink[] ltSinks = lian.getSinkPropagator().getSinks();
         for (LeftTupleSink ltSink : ltSinks) {
             visitLeftTupleSink(ltSink, parentNode);
+        }
+    }
+
+    private void visitRightInputAdapterNode(RightInputAdapterNode rian, Node parentNode) {
+        ObjectSink[] oSinks = rian.getSinkPropagator().getSinks();
+        for (ObjectSink oSink : oSinks) {
+            this.visitObjectSink(oSink, parentNode);
         }
     }
 
@@ -190,96 +201,120 @@ public class PhreakInspector {
         }
     }
 
+    private void visitFromNode(FromNode from, Node parentNode) {
+        Node fromNode = new Node(from.getId(), this.createConstraintsString(from), Node.TYPE.FROM);
+        nodes.put(fromNode.getId(), fromNode);
+        parentNode.addTargetNode(fromNode.getId());
+
+        LeftTupleSinkPropagator ltsp = from.getSinkPropagator();
+        LeftTupleSink[] sinks = ltsp.getSinks();
+        for (LeftTupleSink ltSink : sinks) {
+            visitLeftTupleSink(ltSink, fromNode);
+        }
+    }
+
     private void visitNotNode(NotNode not, Node parentNode) {
         Node notNode = new Node(not.getId(), not.toString(), Node.TYPE.NOT);
         nodes.put(notNode.getId(), notNode);
         parentNode.addTargetNode(notNode.getId());
-        
+
         LeftTupleSinkPropagator ltsp = not.getSinkPropagator();
         LeftTupleSink[] sinks = ltsp.getSinks();
         for (LeftTupleSink ltSink : sinks) {
             visitLeftTupleSink(ltSink, notNode);
         }
     }
-    
+
     private void visitQueryElementNode(QueryElementNode qen, Node parentNode) {
         Node queryNode = new Node(qen.getId(), qen.toString(), Node.TYPE.QUERY_ELEMENT);
         nodes.put(queryNode.getId(), queryNode);
         parentNode.addTargetNode(queryNode.getId());
-        
+
         LeftTupleSinkPropagator ltsp = qen.getSinkPropagator();
         LeftTupleSink[] sinks = ltsp.getSinks();
         for (LeftTupleSink ltSink : sinks) {
             visitLeftTupleSink(ltSink, queryNode);
         }
     }
-    
+
     private void visitAccumulateNode(AccumulateNode an, Node parentNode) {
         Node accNode = new Node(an.getId(), an.toString(), Node.TYPE.ACCUMULATE);
         nodes.put(accNode.getId(), accNode);
         parentNode.addTargetNode(accNode.getId());
-        
+
         LeftTupleSinkPropagator ltsp = an.getSinkPropagator();
         LeftTupleSink[] sinks = ltsp.getSinks();
         for (LeftTupleSink ltSink : sinks) {
             visitLeftTupleSink(ltSink, accNode);
         }
     }
-    
+
     private void visitRuleTerminalNode(RuleTerminalNode rtn, Node parentNode) {
         Node rtNode = new Node(rtn.getId(), rtn.getRule().getName(), Node.TYPE.RULE_TERMINAL);
         nodes.put(rtNode.getId(), rtNode);
         parentNode.addTargetNode(rtNode.getId());
     }
-    
+
     private void visitQueryTerminalNode(QueryTerminalNode qtn, Node parentNode) {
         Node qtNode = new Node(qtn.getId(), qtn.getRule().getName(), Node.TYPE.QUERY_TERMINAL);
         nodes.put(qtNode.getId(), qtNode);
         parentNode.addTargetNode(qtNode.getId());
     }
-    
-    private String createConstraintsString(JoinNode joinNode){
+
+    private String createConstraintsString(JoinNode joinNode) {
         String result = "";
         BetaNodeFieldConstraint[] constraints = joinNode.getConstraints();
-        if (constraints == null){
+        if (constraints == null) {
+            return result;
+        }
+
+        for (BetaNodeFieldConstraint constraint : constraints) {
+            if (constraint instanceof EmptyBetaConstraints) {
+                //do nothing
+            } else if (constraint instanceof MvelConstraint) {
+                result = ((MvelConstraint) constraint).getExpression() + ",";
+            }
+        }
+
+        return result;
+    }
+
+    private String createConstraintsString(FromNode fromNode) {
+        String result = "<from expression here>";
+        MVELDataProvider provider = (MVELDataProvider) fromNode.getDataProvider();
+        if (provider == null) {
             return result;
         }
         
-        for (BetaNodeFieldConstraint constraint : constraints) {
-            if (constraint instanceof EmptyBetaConstraints){
-                //do nothing
-            } else if (constraint instanceof MvelConstraint){
-                result = ((MvelConstraint)constraint).getExpression()+",";
-            }
-        }
-        
+       
+
         return result;
     }
 
     private InputStream generateGraphViz(Map<Integer, Node> nodes) throws IOException {
-        
+
         String template = IOUtils.toString(PhreakInspector.class
                 .getResourceAsStream("/templates/viz.template"));
         ST st = new ST(template, '$', '$');
         st.add("items", nodes.values());
-        
+
         Map<String, List<Node>> itemsByGroup = nodes.values().stream().collect(Collectors.groupingBy(n -> n.getType().getGroup()));
         st.add("itemsByGroup", itemsByGroup);
 
         return new ByteArrayInputStream(st.render().getBytes());
-        
+
     }
 
-    private KieContainer createContainer(){
-        
+    private KieContainer createContainer() {
+
         KieServices ks = KieServices.Factory.get();
         KieContainer kContainer = ks.getKieClasspathContainer();
-        
+
         this.assertBuildResults(kContainer.verify());
-        
+
         return kContainer;
     }
-    
+
     private KieBase buildKieBase(Map<Resource, ResourceType> resources) {
         KieHelper kieHelper = new KieHelper();
 
@@ -291,14 +326,14 @@ public class PhreakInspector {
 
         return kieHelper.build();
     }
-    
-    private void assertBuildResults(Results results){
-        if (results.hasMessages(Message.Level.WARNING, Message.Level.ERROR)){
+
+    private void assertBuildResults(Results results) {
+        if (results.hasMessages(Message.Level.WARNING, Message.Level.ERROR)) {
             List<Message> messages = results.getMessages(Message.Level.WARNING, Message.Level.ERROR);
             for (Message message : messages) {
                 System.out.printf("[%s] - %s[%s,%s]: %s", message.getLevel(), message.getPath(), message.getLine(), message.getColumn(), message.getText());
             }
-            
+
             throw new IllegalStateException("Compilation errors were found. Check the logs.");
         }
     }

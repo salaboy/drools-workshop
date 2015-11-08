@@ -41,7 +41,7 @@ public class PersonRulesJUnitTest {
     }
 
     @Inject
-    @KSession
+    @KSession("rules01KSession")
     private KieSession kSession;
 
     @Test
@@ -84,5 +84,4 @@ public class PersonRulesJUnitTest {
 //        Assert.assertEquals(5, kSession.fireAllRules());
 //        System.out.println(" ---- Finished testPersonRulesInheritanceWithAStudent() Test ---");
 //    }
-
 }
