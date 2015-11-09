@@ -58,71 +58,70 @@ public class RulesWithListenersJUnitTest {
     private KieSession kSession;
 
     @Test
-    @Ignore
     public void testRulesWithListeners() {
         Assert.assertNotNull(kSession);
-        System.out.println(" ---- Starting testPersonRulesWithJustAPerson() Test ---");
+        System.out.println(" ---- Starting testRulesWithListeners() Test ---");
         kSession.addEventListener(new AgendaEventListener() {
 
             public void matchCreated(MatchCreatedEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                System.out.println(">>> Match Created: "+event);
             }
 
             public void matchCancelled(MatchCancelledEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                
             }
 
             public void beforeMatchFired(BeforeMatchFiredEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                System.out.println(">>> Before Match Fired: "+event);
             }
 
             public void afterMatchFired(AfterMatchFiredEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                System.out.println(">>> After Match Fired: "+event);
             }
 
             public void agendaGroupPopped(AgendaGroupPoppedEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                
             }
 
             public void agendaGroupPushed(AgendaGroupPushedEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                
             }
 
             public void beforeRuleFlowGroupActivated(RuleFlowGroupActivatedEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                
             }
 
             public void afterRuleFlowGroupActivated(RuleFlowGroupActivatedEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                
             }
 
             public void beforeRuleFlowGroupDeactivated(RuleFlowGroupDeactivatedEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                
             }
 
             public void afterRuleFlowGroupDeactivated(RuleFlowGroupDeactivatedEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                
             }
         });
         kSession.addEventListener(new RuleRuntimeEventListener() {
 
             public void objectInserted(ObjectInsertedEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                System.out.println(">>> Object Inserted: "+event);
             }
 
             public void objectUpdated(ObjectUpdatedEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                
             }
 
             public void objectDeleted(ObjectDeletedEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                
             }
         });
         
         kSession.insert(new Person());
 
         Assert.assertEquals(1, kSession.fireAllRules());
-        System.out.println(" ---- Finished testPersonRulesWithJustAPerson() Test ---");
+        System.out.println(" ---- Finished testRulesWithListeners() Test ---");
     }
 
 

@@ -14,4 +14,10 @@
     <kbase name="rules05" packages="rules05"> 
         <ksession name="rules05KSession"/>
     </kbase>
+    <kbase name="rules06" packages="rules06"> 
+        <ksession name="rules06KSession"/>
+    </kbase>
+    <kbase name="rules07" packages="rules07"> 
+        <ksession name="rules07KSession"/>
+    </kbase>
 </kmodule>
