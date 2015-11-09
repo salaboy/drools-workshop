@@ -50,7 +50,7 @@ public class PersonRulesJUnitTest {
         System.out.println(" ---- Starting testPersonRulesWithJustAPerson() Test ---");
 
         kSession.insert(new Person());
-
+        
         Assert.assertEquals(1, kSession.fireAllRules());
         System.out.println(" ---- Finished testPersonRulesWithJustAPerson() Test ---");
     }
