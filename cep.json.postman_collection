@@ -1,0 +1,70 @@
+{
+	"id": "4bc9bb69-36ea-e8eb-7d5a-b60b2a1e7a20",
+	"name": "cep",
+	"description": "",
+	"order": [
+		"83ce2150-f410-f359-27c5-f87f6c35f85e",
+		"d072c5b5-56b3-b5f3-6e3f-719ae0176963",
+		"f722215b-2563-a8d0-b13c-facd141743a5"
+	],
+	"folders": [],
+	"timestamp": 1446998283028,
+	"owner": "",
+	"remoteLink": "",
+	"public": false,
+	"requests": [
+		{
+			"id": "83ce2150-f410-f359-27c5-f87f6c35f85e",
+			"url": "http://localhost:8080/cep/transaction/frauds",
+			"method": "GET",
+			"headers": "Content-Type: application/json\n",
+			"data": [],
+			"dataMode": "params",
+			"tests": "",
+			"preRequestScript": "",
+			"currentHelper": "normal",
+			"pathVariables": {},
+			"version": 2,
+			"name": "http://localhost:8080/cep/transaction/frauds",
+			"description": "",
+			"descriptionFormat": "html",
+			"collectionId": "4bc9bb69-36ea-e8eb-7d5a-b60b2a1e7a20"
+		},
+		{
+			"id": "d072c5b5-56b3-b5f3-6e3f-719ae0176963",
+			"url": "http://localhost:8080/cep/transaction/blacklist/pepe",
+			"method": "POST",
+			"headers": "Content-Type: application/json\n",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "",
+			"preRequestScript": "",
+			"currentHelper": "normal",
+			"pathVariables": {},
+			"version": 2,
+			"name": "http://localhost:8080/cep/transaction/blacklist/pepe",
+			"description": "",
+			"descriptionFormat": "html",
+			"collectionId": "4bc9bb69-36ea-e8eb-7d5a-b60b2a1e7a20",
+			"rawModeData": ""
+		},
+		{
+			"id": "f722215b-2563-a8d0-b13c-facd141743a5",
+			"url": "http://localhost:8080/cep/transaction",
+			"method": "POST",
+			"headers": "Content-Type: application/json\n",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "",
+			"preRequestScript": "",
+			"currentHelper": "normal",
+			"pathVariables": {},
+			"version": 2,
+			"name": "http://localhost:8080/cep/transaction",
+			"description": "",
+			"descriptionFormat": "html",
+			"collectionId": "4bc9bb69-36ea-e8eb-7d5a-b60b2a1e7a20",
+			"rawModeData": "{\"client\": { \"name\" : \"pepe\" } }"
+		}
+	]
+}
