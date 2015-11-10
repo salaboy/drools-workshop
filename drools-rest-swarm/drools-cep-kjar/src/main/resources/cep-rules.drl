@@ -15,6 +15,7 @@ end
 rule "too many transactions from same client in last half hour"
   when
     Transaction($c: client, $cname: client.name)
+    not ( FraudSuspicion (client.name == $cname) ) 
     $list: List(size > 10) from collect(
         Transaction(client.name == $cname) over window:time(30m)
     )
