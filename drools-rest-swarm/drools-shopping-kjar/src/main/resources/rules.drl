@@ -22,7 +22,7 @@ rule "Item Added"
         ArrayList($size: size) from collect(CartItem())
         not(CartItem(item == $i))
     then
-        System.out.println(">> New Item Added: "+ $i);
+        channels["outboundChannel"].send(">> New Item Added: "+ $i);
         insert(new CartItem($i, $size));
 end
 
@@ -31,7 +31,8 @@ rule "Shopping Cart Full"
         ArrayList($size: size >= 3) from collect(CartItem())
     then
         
-        System.out.println(">> The Shopping Cart is Full with : "+$size +" items");
+        
+        channels["outboundChannel"].send(">> The Shopping Cart is Full with : "+$size +" items");
         insertLogical(new CartFull());
 end
 
@@ -41,7 +42,7 @@ rule "Shopping Cart Full - Remove incoming item"
         $i: Item()
         not(CartItem(item == $i))
     then
-        System.out.println(">> Removing item because there is no more space : "+$i);
+        channels["outboundChannel"].send(">> Removing item because there is no more space : "+$i);
         retract($i);
         
 end
@@ -50,6 +51,6 @@ rule "Shopping Cart - Current total"
     when
         $total: Double() from accumulate(CartItem($price: item.price), sum($price))
     then
-        System.out.println(">> The current total is: "+ $total);
+        channels["outboundChannel"].send(">> The current total is: "+ $total);
 end
 

@@ -14,6 +14,7 @@ import org.drools.workshop.endpoint.exception.BusinessException;
 import org.drools.workshop.model.Item;
 import org.kie.api.KieBase;
 import org.kie.api.cdi.KReleaseId;
+import org.kie.api.runtime.Channel;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.ObjectFilter;
@@ -44,6 +45,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         conf.setAssertBehaviour(RuleBaseConfiguration.AssertBehaviour.EQUALITY);
         KieBase kBase = kContainer.newKieBase(conf);
         KieSession kSession = kBase.newKieSession();
+        kSession.registerChannel("outboundChannel", new Channel() {
+
+            @Override
+            public void send(Object o) {
+                System.out.println(o);
+            }
+        });
         shoppingCarts.put(cartId, kSession);
         return cartId;
     }
