@@ -1,0 +1,29 @@
+// main: ../main.less
+@import (once) "../variables.less";
+body {
+    font-size: @fontSize;
+    line-height: @lineHeight;
+    
+}
+
+h1, h2{
+    font-weight: 200;
+    margin: 0 0 @padding/2;
+}
+
+h3, h4 {
+    font-weight: 400;
+    margin: 0;
+    margin: 0 0 @padding/2;
+}
+
+h5, h6 {
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 0;
+    margin: 0 0 @padding/4;
+}
+
+p {
+    color: lighten(@grayDark, 20%);
+}

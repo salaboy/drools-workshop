@@ -6,7 +6,6 @@
 package org.drools.workshop.endpoint.api;
 
 import java.util.List;
-import java.util.Set;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,6 +16,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import org.drools.workshop.endpoint.exception.BusinessException;
 import org.drools.workshop.model.Item;
+import org.drools.workshop.model.ShoppingCart;
+import org.drools.workshop.model.User;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -26,8 +27,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Path("shopping")
 public interface ShoppingCartService {
     @POST
-    @Path("/new")
-    public String newShoppingCart() throws BusinessException;
+    @Produces("application/json")
+    @Path("/new/")
+    public ShoppingCart newShoppingCart(@NotNull User user) throws BusinessException;
     
     @PUT
     @Path("/{id}")
@@ -57,6 +59,6 @@ public interface ShoppingCartService {
     @GET
     @Produces("application/json")
     @Path("/carts")
-    public Set<String> getShoppingCarts() throws BusinessException;
+    public List<ShoppingCart> getShoppingCarts() throws BusinessException;
     
 }

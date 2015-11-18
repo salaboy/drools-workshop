@@ -1,0 +1,42 @@
+// main: ../main.less
+@import (once) "../variables.less";
+.button {
+    display: inline-block;
+    border: 1px solid @blue;
+    background-color: transparent;
+    color: @blue;
+    padding: @padding/8 @padding/2;
+    line-height: @buttonLineHeight;
+    text-decoration: none;
+    
+    &:hover {
+        background-color: @blue;
+        color: @white;
+        text-decoration: none;
+    }
+    
+    &.block {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+    
+    &.inverted {
+        background-color: @blue;
+        color: @white;
+        border: 1px solid @white;
+        &:hover {
+            color: @grayDark;
+             border: 1px solid  @grayDark;
+        }
+    }
+    
+    &.delete {
+        color: @red;
+        border: 1px solid @red;
+        &:hover {
+            background-color: @red;
+            color: @white;
+        }
+    }
+}

@@ -1,0 +1,72 @@
+// main: ../main.less
+@import (once) "../variables.less";
+.sheet {
+    position: absolute;
+    background-color: @white;
+    padding: @padding;
+    box-sizing: border-box;
+    transition: padding 1s ease-in-out;
+    &.ng-enter, &.ng-leave {
+        transition: all 0s !important;
+    }
+ 
+    &.bottom {
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        border-top: 1px solid @gray;
+    }
+    
+    &.topbar {
+        padding:  0;
+        width: 100%;
+        height: @topBarHeight;
+        top: 0;
+        left: 0;
+        border-bottom: 1px solid @gray;
+        z-index: @topBarIndex;
+        text-align: center;
+        line-height: @topBarHeight;
+        position: fixed;
+        box-sizing: border-box;
+        .title {
+            font-size: @fontSizeBig;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+        & + .searchbar {
+             top: @topBarHeight;
+        }
+    }
+    &.searchbar {
+        padding: 0 @padding;
+        background-color: @grayLight;
+        width: 100%;
+        height: @topBarHeight;
+        top: 0;
+        left: 0;
+        border-bottom: 1px solid @gray;
+        z-index: @topBarIndex;
+        text-align: center;
+        line-height: @topBarHeight;
+        position: fixed;
+        box-sizing: border-box;
+        
+    }
+}
+
+.screen {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    transition: padding 1s ease-in-out;
+    &.ng-enter, &.ng-leave {
+        transition: all 0s !important;
+    }
+}
+
+
+.content {
+    padding: @padding*2 @padding @padding;
+}

@@ -1,0 +1,50 @@
+// main: ../main.less
+@import (once) "../variables.less";
+.content {
+    &.list {
+        height: 100%;
+        position: relative;
+        padding: (@topBarHeight*2 + @padding/2) @padding @padding;
+        
+        .list-item {
+            background-color: @white;
+            margin-bottom: @padding/4;
+            border: 1px solid @gray;
+            padding: @padding/4;
+            cursor: pointer;
+            box-shadow: 0 1px 1px fade(@grayDark, 10%);
+            
+            .item-name {
+                font-weight: 600;
+            }
+            .item-detail {
+                font-weight: 400;
+                opacity: .5;
+            }
+            
+            &:hover {
+                .item-name {
+                    color: @blue;
+                }
+            }
+           
+        }
+        
+        @media (min-width: @md ) {
+            padding: (@topBarHeight*2 + @padding/2) (@padding - 10) @padding;
+            .list-item {
+                display: inline-block;
+                width: 20%;
+                min-width: 250px;
+                margin: 10px;
+                height: 200px;
+            }
+        }
+        
+        .list-actions {
+            position: fixed;
+            right: @padding/2;
+            bottom: @padding/2;
+        }
+    }
+}

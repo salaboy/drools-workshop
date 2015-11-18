@@ -1,0 +1,116 @@
+// main: ../main.less
+@import (once) "../variables.less";
+form {
+    max-width: @formsMaxWidth;
+    margin: 0 auto;
+    &.fluid {
+        max-width: 100%;
+        margin: 0;
+    }
+    .form-group {
+        padding-bottom: @padding/4;
+        & > label {
+            display: block;
+            font-size: @fontSizeSmall;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        input.form-control {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0 (@padding/8);
+            color: lighten(@grayDark, 20%);
+            height: @inputHeight;
+            line-height: @inputHeight;
+            border: 1px solid @gray;
+            &:focus {
+                outline: 0;
+                box-shadow: 0 0 0 1px @blue;
+            }
+            
+            &.search {
+                width: 100%;
+                border-radius: (@inputHeight/2);
+                box-sizing: border-box;
+                padding: 0 (@padding/4);
+            }
+            
+            &[type="radio"] {
+                width: auto;
+                display: inline-block;
+                height: @inputHeight/2;
+            }
+            
+        }
+        textarea.form-control {
+            width: 100%;
+        
+            box-sizing: border-box;
+            padding: 0 (@padding/8);
+            color: lighten(@grayDark, 20%);
+            height: @textareaHeight;
+            line-height: @lineHeight;
+            border: 1px solid @gray;
+            &:focus {
+                outline: 0;
+                box-shadow: 0 0 0 1px @blue;
+            }
+            
+           
+            
+        }
+        
+        .radio-options {
+            padding: @inputHeight/8 0 ;
+            width: 100%;
+            box-sizing: border-box;
+            border-top: 1px solid @gray;
+            border-bottom: 1px solid @gray;
+            height: @inputHeight;
+            
+            
+            .radio-option {
+                display: inline-block;
+                font-size: @fontSizeRadio;  
+                margin-right: (@padding/4);
+                position: relative;
+                top: -2px;
+            }
+        }
+    }  
+    
+    fieldset {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        & + fieldset {
+            
+            margin-top: @padding/2;
+            padding-top: @padding/2;
+        }
+    }
+    
+   
+}
+
+.content {
+    &.form {
+        min-height: 100%;
+        padding: @topBarHeight 0 @padding*2;
+        .form-actions {
+            position: fixed;
+            left: 0;
+            width: 100%;
+            bottom: 0;
+            background-color: @blue;
+            border-top: 1px solid @gray;
+            padding: @padding/4 @padding/2;
+            line-height: @actionBarHeight - @padding/2;
+            box-sizing: border-box;
+            .main-action {
+                float: right;
+            }
+        }
+    }
+
+}

@@ -19,7 +19,7 @@
         <kie.version>6.3.0.Final</kie.version>
         <junit.version>4.11</junit.version>
         <cdi.version>1.2</cdi.version>
-        <version.wildfly-swarm>1.0.0.Alpha5</version.wildfly-swarm>
+        
         <docker.from>jboss/base-jdk:8</docker.from> 
         <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
         <docker.assemblyDescriptorRef>artifact</docker.assemblyDescriptorRef>
@@ -82,6 +82,7 @@
             <version>14.0</version>
         </dependency>
     </dependencies>
+  
     <build>
         <plugins>
             <plugin>
@@ -93,6 +94,7 @@
                     <target>1.7</target>
                 </configuration> 
             </plugin>
+            
             <plugin>
                 <groupId>org.wildfly.swarm</groupId>
                 <artifactId>wildfly-swarm-plugin</artifactId>

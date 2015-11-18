@@ -1,0 +1,24 @@
+// main: ../main.less
+@import (once) "../variables.less";
+.content {
+    &.detail {
+        min-height: 100%;
+        padding: @topBarHeight 0 @padding*2;
+        .detail-actions {
+            position: fixed;
+            left: 0;
+            width: 100%;
+            bottom: 0;
+            height: @actionBarHeight;
+            line-height: @actionBarHeight - @padding/2;
+            box-sizing: border-box;
+            background-color: @grayLight;
+            border-top: 1px solid @gray;
+            padding: @padding/4 @padding/2;
+            .main-action {
+                float: right;
+            }
+        }
+    }
+
+}

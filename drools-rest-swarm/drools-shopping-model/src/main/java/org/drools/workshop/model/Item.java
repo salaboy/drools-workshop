@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class Item {
+    private String id;
     private String name;
     private int price;
 
@@ -21,7 +22,21 @@ public class Item {
         this.price = price;
     }
 
+    public Item(String id, String name, int price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
+
     public Item() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -42,8 +57,10 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item{" + "name=" + name + ", price=" + price + '}';
+        return "Item{" + "id=" + id + ", name=" + name + ", price=" + price + '}';
     }
+
+    
 
     @Override
     public int hashCode() {

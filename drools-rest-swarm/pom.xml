@@ -8,17 +8,24 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Drools Workshop :: REST Wildfly Swarm Example</name>
-
+    <properties>
+        <version.wildfly-swarm>1.0.0.Alpha6-SNAPSHOT</version.wildfly-swarm>
+        <maven.min.version>3.2.1</maven.min.version>
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.7</maven.compiler.source>
+    </properties>
 
     <modules>
         <module>drools-user-model</module>
         <module>drools-user-kjar</module>
-	<module>drools-cep-model</module>
-	<module>drools-cep-kjar</module>
+        <module>drools-cep-model</module>
+        <module>drools-cep-kjar</module>
         <module>drools-jax-rs</module>
-	<module>drools-shopping-model</module>
-	<module>drools-shopping-kjar</module>
-	<module>drools-shopping-services</module>
+        <module>drools-shopping-model</module>
+        <module>drools-shopping-kjar</module>
+        <module>drools-shopping-services</module>
+        <module>drools-warehouse-model</module>
+        <module>drools-warehouse-services</module>
         <module>drools-cep-services</module>
     </modules>
   
@@ -28,6 +35,18 @@
             <name>JBoss Public Repository Group</name>
             <url>https://repository.jboss.org/nexus/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>cloudbees swarm</id>
+            <url>https://repository-projectodd.forge.cloudbees.com/snapshot/</url>
+        </repository>
     </repositories>
     
+    <pluginRepositories>
+        <pluginRepository>
+            <id>swarm plugins</id>
+            <url>https://repository-projectodd.forge.cloudbees.com/snapshot/</url>
+        </pluginRepository>    
+    </pluginRepositories>
+    
+
 </project>

@@ -1,0 +1,28 @@
+<div class="sheet topbar">
+    <div class="title">
+        Items
+    </div>
+</div>
+<div class="sheet searchbar">
+    <form class="fluid">
+        <div class="form-group">
+            <input type="text" placeholder="Search" class="form-control search">
+        </div>
+    </form>
+</div>
+<div class="content list"  >
+    
+    <div class="list-item" ng-click="go('/items/details',{id: item.id})" ng-repeat="item in items">
+        <div class="item-name">
+           {{item.id}} - {{item.name}} : {{item.price}}
+        </div>
+        
+    </div>
+
+    <div class="list-actions">
+        <a class="button inverted" href="#/items/new">New item</a>
+    </div> 
+
+
+</div>
+

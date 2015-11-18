@@ -2,8 +2,12 @@ package org.drools.workshop;
 import org.drools.workshop.model.*;
 import java.util.ArrayList;
 
-query "Get All Cat Items" ($item)
+query "Get CatItems By Item" ($item)
     $ci: CartItem( item == $item )
+end
+
+query "Get CatItems Number" ()
+    ArrayList($size: size) from collect(CartItem())
 end
 
 declare CartFull

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -12,9 +11,12 @@ import org.drools.core.RuleBaseConfiguration;
 import org.drools.workshop.endpoint.api.ShoppingCartService;
 import org.drools.workshop.endpoint.exception.BusinessException;
 import org.drools.workshop.model.Item;
+import org.drools.workshop.model.ShoppingCart;
+import org.drools.workshop.model.User;
 import org.kie.api.KieBase;
 import org.kie.api.cdi.KReleaseId;
 import org.kie.api.runtime.KieContainer;
+
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.ObjectFilter;
 import org.kie.api.runtime.rule.FactHandle;
@@ -33,19 +35,21 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private KieContainer kContainer;
 
     private Map<String, KieSession> shoppingCarts = new HashMap<String, KieSession>();
+    private Map<String, String> userCarts = new HashMap<String, String>();
 
     public ShoppingCartServiceImpl() {
     }
 
     @Override
-    public String newShoppingCart() throws BusinessException {
+    public ShoppingCart newShoppingCart(User user) throws BusinessException {
         String cartId = UUID.randomUUID().toString();
         RuleBaseConfiguration conf = new RuleBaseConfiguration();
         conf.setAssertBehaviour(RuleBaseConfiguration.AssertBehaviour.EQUALITY);
         KieBase kBase = kContainer.newKieBase(conf);
         KieSession kSession = kBase.newKieSession();
         shoppingCarts.put(cartId, kSession);
-        return cartId;
+        userCarts.put(cartId, user.getUserId());
+        return new ShoppingCart(cartId);
     }
 
     @Override
@@ -64,9 +68,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
         FactHandle factHandle = shoppingCarts.get(id).getFactHandle(item);
         shoppingCarts.get(id).delete(factHandle);
-        QueryResults results = shoppingCarts.get(id).getQueryResults("Get All Cat Items", item);
+        QueryResults results = shoppingCarts.get(id).getQueryResults("Get CatItems By Item", item);
         String[] keys = results.getIdentifiers();
-        for(QueryResultsRow row : results){
+        for (QueryResultsRow row : results) {
             shoppingCarts.get(id).delete(row.getFactHandle(keys[0]));
         }
         shoppingCarts.get(id).fireAllRules();
@@ -125,8 +129,17 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public Set<String> getShoppingCarts() throws BusinessException {
-        return shoppingCarts.keySet();
+    public List<ShoppingCart> getShoppingCarts() throws BusinessException {
+        List<ShoppingCart> carts = new ArrayList<ShoppingCart>(shoppingCarts.keySet().size());
+        for (String id : shoppingCarts.keySet()) {
+            QueryResults results = shoppingCarts.get(id).getQueryResults("Get CatItems Number");
+            int size = 0;
+            for (QueryResultsRow row : results) {
+                size = (Integer) row.get("$size");
+            }
+            carts.add(new ShoppingCart(id, size, userCarts.get(id)));
+        }
+        return carts;
     }
 
 }
