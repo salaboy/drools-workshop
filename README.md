@@ -23,7 +23,7 @@ Here are some projects for a basic to intermediate Drools Workshop
 
 # Building the projects (To avoid big downloads on the workshops)
   # Requirements:
-    - JDK 1.7 + 
+    - JDK 1.8 +  (some of the projects will be compiled using 1.7 target for compatibility with kie-server)
     - Maven 3.2.3 + 
     - Git tools (https://git-scm.com/downloads)
     - Docker (https://docs.docker.com)
