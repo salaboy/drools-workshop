@@ -1,6 +1,6 @@
 <div class="sheet topbar">
     <div class="title">
-        Items
+        Carts
     </div>
 </div>
 <div class="sheet searchbar">
@@ -12,16 +12,15 @@
 </div>
 <div class="content list"  >
     
-    <div class="list-item" ng-click="go('/items/details',{id: item.id})" ng-repeat="item in items">
+    <div class="list-item" ng-click="go('/items/details',{id: item.id})" ng-repeat="cart in carts">
         <div class="item-name">
-           {{item.id}} - {{item.name}} : {{item.price}}
+           {{cart.id}} - {{cart.user}} 
         </div>
         
     </div>
 
     <div class="list-actions">
         <a class="button inverted" ng-click="initItems()">Init Items</a>
-        <a class="button inverted" ng-click="go('/items/new',{})">New item</a>
     </div> 
     
 

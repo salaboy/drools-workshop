@@ -13,6 +13,7 @@ import org.drools.workshop.endpoint.impl.ShoppingCartServiceImpl;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
+import org.wildfly.swarm.keycloak.Secured;
 
 /**
  *
@@ -27,6 +28,7 @@ public class App {
 
         JAXRSArchive deployment = ShrinkWrap.create(JAXRSArchive.class);
         deployment.setContextRoot("/api");
+        deployment.as(Secured.class);
         deployment.addPackage("org.drools.workshop.model");
         deployment.addPackages(true, "org.kie.api");
         deployment.addPackages(true, "org.drools");

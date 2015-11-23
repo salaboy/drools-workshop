@@ -100,7 +100,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public List<Item> getItems(String id) throws BusinessException {
+    public List<Item> getCartItems(String id) throws BusinessException {
         if (shoppingCarts.get(id) == null) {
             throw new BusinessException("The cart Id is not valid!");
         }

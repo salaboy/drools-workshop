@@ -72,6 +72,9 @@
                 <artifactId>wildfly-swarm-plugin</artifactId>
                 <configuration>
                     <mainClass>org.drools.workshop.warehouse.App</mainClass>
+                    <properties>
+                        <jboss.socket.binding.port-offset>3</jboss.socket.binding.port-offset>
+                    </properties>
                 </configuration>
                 <executions>
                     <execution>

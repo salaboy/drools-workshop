@@ -5,18 +5,12 @@
         .module('constants.factory', [])
         .factory('constantsFactory', constantsFactory);
 
-    constantsFactory.$inject = ['$cookies'];
+    constantsFactory.$inject = ['$rootScope'];
 
-    function constantsFactory($cookies) {
+    function constantsFactory($rootScope) {
         var service = {
-            port: '8080',
-            server: 'http://localhost:8080/api/',
-            authHeader: {
-                headers: {
-                    service_key: 'webkey:' + $cookies.get('user_email'),
-                    auth_token: $cookies.get('user_token')
-                }
-            },
+            itemsService: 'http://localhost:8083/api/warehouse/items/',
+            shoppingCartService: 'http://localhost:8084/api/shopping/',
             header: {
                 headers: {
                     'Access-Control-Allow-Headers': '*'

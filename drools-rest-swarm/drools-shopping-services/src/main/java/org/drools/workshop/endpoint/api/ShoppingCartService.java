@@ -28,7 +28,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public interface ShoppingCartService {
     @POST
     @Produces("application/json")
-    @Path("/new/")
+    @Path("")
     public ShoppingCart newShoppingCart(@NotNull User user) throws BusinessException;
     
     @PUT
@@ -54,7 +54,7 @@ public interface ShoppingCartService {
     @GET
     @Produces("application/json")
     @Path("/{id}")
-    public List<Item> getItems(@PathParam("id") @NotEmpty @NotNull String id) throws BusinessException;
+    public List<Item> getCartItems(@PathParam("id") @NotEmpty @NotNull String id) throws BusinessException;
     
     @GET
     @Produces("application/json")

@@ -1,9 +1,8 @@
 {
   "realm": "shop",
   "realm-public-key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiTOljmxdSv0+fgtc36TeT9tKEABJ/Mo4xnX4BIL47Jyx3nZxuwZWrPaB4J9zig+1RFF0kEe1Wybq+8Qe82iIBd2VYBpO6SNDwxjzWV37U432oA7I4+emgoUfK6aqlOCY+2mQSRaDtDWSLBYoY/ZMBRyVVR4vmjeAkj90P/ffz50KhySIhAsDESSQM3AzqCB3XvtQkL2AxgB+iB2cM/0t2fwC2gJBjF8LHeLm+KpjBmUw5Y7Tg095BYft+UPNiIifoqHKwCIi8kvVmS4BYHkNxXy4fTzvvDqnpFoNyLE7WHTid0duFDS3AyAlgnuoizbCLKbYrXl4rUJOmmB7rVjc5QIDAQAB",
-  "bearer-only": true,
   "auth-server-url": "http://localhost:9090/auth",
   "ssl-required": "external",
-  "resource": "shopping-cart",
-  "use-resource-role-mappings": true
+  "resource": "web-ui",
+  "public-client": true
 }

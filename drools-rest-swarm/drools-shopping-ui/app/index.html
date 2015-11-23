@@ -1,98 +1,101 @@
 <!doctype html>
 <html class="no-js">
 
-<head>
-    <meta charset="utf-8">
-    <title></title>        
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Work+Sans:400,200,600' rel='stylesheet' type='text/css'>
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/style.css">
-    <!-- endbuild -->
+    <head>
+        <meta charset="utf-8">
+        <title></title>        
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href='https://fonts.googleapis.com/css?family=Work+Sans:400,200,600' rel='stylesheet' type='text/css'>
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <!-- build:css(.) styles/vendor.css -->
+        <!-- bower:css -->
+        <!-- endbower -->
+        <!-- endbuild -->
+        <!-- build:css(.tmp) styles/main.css -->
+        <link rel="stylesheet" href="styles/style.css">
+        <!-- endbuild -->
+        <script src="http://localhost:9090/auth/js/keycloak.js"></script>
+    </head>
 
-</head>
-
-<body ng-app="shoppingCartApp">
-    <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your          browser</a> to improve your experience.</p>
-    <![endif]-->
-
-  
-    
-    <div class="sidebar" ng-controller="navController">
-            
-        <nav>
-            <ul id="main-nav" ng-class="{inactive: mainNavTopOpen}" ng-mouseover="closeMainNavTop()">
-                <li class="sidebar-link" ng-class="{active: isActive('/items')}">
-                    <a href ng-click="go('/items', {})">Items</a>
-                </li>
-                <li class="sidebar-link" ng-class="{active: isActive('/cart')}">
-                    <a href ng-click="go('/cart', {})">Cart</a>
-                </li>
-            </ul>
-            
-            
-        </nav>
-       
-    </div>
-    
-    <section ui-view class="screen"></section>
-    
+    <body>
+        <!--[if lt IE 7]>
+          <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your          browser</a> to improve your experience.</p>
+        <![endif]-->
 
 
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-    <script>
-        ! function (A, n, g, u, l, a, r) {
-            A.GoogleAnalyticsObject = l, A[l] = A[l] || function () {
+        <div class="sidebar" ng-controller="navController">
+
+            <nav>
+                <ul id="main-nav"> <!--ng-class="{inactive: mainNavTopOpen}" ng-mouseover="closeMainNavTop()"> -->
+                    <li class="sidebar-link"> <!--ng-class="{active: isActive('/items')}"> -->
+                        <a href ng-click="go('/items', {})">Items</a>
+                    </li>
+                    <li class="sidebar-link"> <!-- ng-class="{active: isActive('/carts')}"> -->
+                        <a href ng-click="go('/carts', {})">Cart</a>
+                    </li>
+                    <li class="sidebar-link"> <!-- ng-class="{active: isActive('/dashboard')}"> -->
+                        <a href ng-click="go('/dashboard', {})">Dashboard</a>
+                    </li>
+                </ul>
+
+
+            </nav>
+
+        </div>
+
+        <section ui-view class="screen"></section>
+
+
+
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+        <script>
+            !function (A, n, g, u, l, a, r) {
+                A.GoogleAnalyticsObject = l, A[l] = A[l] || function () {
                     (A[l].q = A[l].q || []).push(arguments)
                 }, A[l].l = +new Date, a = n.createElement(g),
-                r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
-        }(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+                        r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
+            }(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-        ga('create', 'UA-XXXXX-X');
-        ga('send', 'pageview');
-    </script>
+            ga('create', 'UA-XXXXX-X');
+            ga('send', 'pageview');
+        </script>
 
-    <!-- build:js(.) scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/hello/dist/hello.all.min.js"></script>
-    <script src="bower_components/ng-hello/dist/ng-hello.min.js"></script>
-    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
+        <!-- build:js(.) scripts/vendor.js -->
+        <!-- bower:js -->
+        <script src="bower_components/jquery/dist/jquery.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+        <script src="bower_components/angular-animate/angular-animate.js"></script>
+        <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="bower_components/angular-resource/angular-resource.js"></script>
+        <script src="bower_components/angular-route/angular-route.js"></script>
+        <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+        <script src="bower_components/angular-touch/angular-touch.js"></script>
+        <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+        <!-- endbower -->
+        <!-- endbuild -->
 
-    <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <script src="scripts/app.js"></script>
-    <!-- endbuild -->
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/app.js"></script>
+        <!-- endbuild -->
 
-    <script src="scripts/Shared/rest.factory.js"></script>
-    <script src="scripts/Shared/constants.factory.js"></script>
-    <script src="scripts/Nav/nav.controller.js"></script>
+        <script src="scripts/Shared/rest.factory.js"></script>
+        <script src="scripts/Shared/constants.factory.js"></script>
+        <script src="scripts/Nav/nav.controller.js"></script>
 
-    <script src="scripts/Items/items.factory.js"></script>
-    <script src="scripts/Items/List/items.list.controller.js"></script>
-<!--    <script src="scripts/Items/New/items.new.controller.js"></script>
-    
-    <script src="scripts/Items/Details/items.details.controller.js"></script>
-    <script src="scripts/Items/Edit/items.edit.controller.js"></script>-->
-    
-</body>
+        <script src="scripts/Items/items.factory.js"></script>
+        <script src="scripts/Items/List/items.list.controller.js"></script>
+        <script src="scripts/Items/New/items.new.controller.js"></script>
+        <script src="scripts/Items/Details/items.details.controller.js"></script>
+        <script src="scripts/Items/Edit/items.edit.controller.js"></script>
+
+        <script src="scripts/Dashboard/dashboard.controller.js"></script>
+        <script src="scripts/Carts/carts.factory.js"></script>
+        <script src="scripts/Carts/List/carts.list.controller.js"></script>
+    </body>
 
 </html>

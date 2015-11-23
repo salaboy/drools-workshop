@@ -25,7 +25,7 @@ public class AuthRESTResponseFilter implements ContainerResponseFilter {
 
     public void filter(ContainerRequestContext requestCtx, ContainerResponseContext responseCtx) throws IOException {
 
-//        log.info("Filtering REST Response");
+        log.info("Filtering REST Response");
 
         responseCtx.getHeaders().add("Access-Control-Allow-Origin", "*");    // You may further limit certain client IPs with Access-Control-Allow-Origin instead of '*'
         
@@ -33,7 +33,7 @@ public class AuthRESTResponseFilter implements ContainerResponseFilter {
 
         responseCtx.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
 
-        responseCtx.getHeaders().add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        responseCtx.getHeaders().add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Headers, Access-Control-Allow-Origin");
 
     }
 
