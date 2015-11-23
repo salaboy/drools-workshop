@@ -3203,6 +3203,20 @@
       "clientSecret" : "145wndS4weXYPaq9Yn0_JNCE",
       "clientId" : "657749353183-bgngoto16oc1c6j6jeaq05hubpqshf5j.apps.googleusercontent.com"
     }
+  }, {
+    "alias" : "facebook",
+    "internalId" : "e88f0b1a-edc7-4d39-9292-5ad220ca7509",
+    "providerId" : "facebook",
+    "enabled" : true,
+    "updateProfileFirstLoginMode" : "on",
+    "trustEmail" : false,
+    "storeToken" : true,
+    "addReadTokenRoleOnCreate" : false,
+    "authenticateByDefault" : false,
+    "config" : {
+      "clientSecret" : "f85f33168b3cb6d85f5aa7f56e46e9d3",
+      "clientId" : "898235413586954"
+    }
   } ],
   "identityFederationEnabled" : true,
   "internationalizationEnabled" : false,
