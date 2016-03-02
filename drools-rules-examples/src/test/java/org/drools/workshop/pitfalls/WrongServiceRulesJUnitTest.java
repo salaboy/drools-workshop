@@ -3,14 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.drools.workshop;
+package org.drools.workshop.pitfalls;
 
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import org.drools.workshop.model.Person;
 import org.drools.workshop.model.Person.Gender;
-import org.drools.workshop.model.Room;
+import org.drools.workshop.model.University;
+import org.drools.workshop.services.MyDataProviderServiceImpl;
+import org.drools.workshop.services.SlowMyServiceImpl;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -23,15 +25,16 @@ import org.junit.runner.RunWith;
 import org.kie.api.KieBase;
 import org.kie.api.cdi.KBase;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.FactHandle;
 
 /**
  *
  * @author salaboy
  */
 @RunWith(Arquillian.class)
-public class AccumulationRulesJUnitTest {
+public class WrongServiceRulesJUnitTest {
 
-    public AccumulationRulesJUnitTest() {
+    public WrongServiceRulesJUnitTest() {
     }
 
     @Deployment
@@ -45,57 +48,47 @@ public class AccumulationRulesJUnitTest {
     }
 
     @Inject
-    @KBase("rules04")
+    @KBase("wrongServiceKBase")
     private KieBase kBase;
 
     @Test
-    public void testPersonAndARoom() {
+    public void testSlowServiceInAGlobal() {
         Assert.assertNotNull(kBase);
         KieSession kSession = kBase.newKieSession();
-        System.out.println(" ---- Starting testPersonsInARoom() Test ---");
-        Room room = new Room("living room", 10);
-        kSession.insert(room);
-        Person person = new Person("salaboy", 32, "salaboy@mail.com", "London", Gender.MALE);
-        kSession.insert(person);
 
-        Assert.assertEquals(1, kSession.fireAllRules());
-        System.out.println(" ---- Finished testPersonsInARoom() Test ---");
-        kSession.dispose();
-    }
+        kSession.setGlobal("myService", new SlowMyServiceImpl());
+        System.out.println(" ---- Starting testSlowServiceInAGlobal() Test ---");
 
-    @Test
-    public void testPersonInARoom() {
-        Assert.assertNotNull(kBase);
-        KieSession kSession = kBase.newKieSession();
-        System.out.println(" ---- Starting testPersonsInARoom() Test ---");
-        Room room = new Room("living room", 10);
-        Person salaboy = new Person("salaboy", 32, "salaboy@mail.com", "London", Gender.MALE);
-        List<Person> persons = new ArrayList<Person>();
-        persons.add(salaboy);
-        room.setPersons(persons);
-        kSession.insert(room);
-
-        Assert.assertEquals(0, kSession.fireAllRules());
-        System.out.println(" ---- Finished testPersonsInARoom() Test ---");
-        kSession.dispose();
-    }
-    
-    @Test
-    public void test20PersonsInARoom() {
-        Assert.assertNotNull(kBase);
-        KieSession kSession = kBase.newKieSession();
-        System.out.println(" ---- Starting test20PersonsInARoom() Test ---");
-        Room room = new Room("living room", 10);
         List<Person> persons = generatePersons(20);
-        room.setPersons(persons);
-        kSession.insert(room);
+        for (Person p : persons) {
+            kSession.insert(p);
+        }
 
-        Assert.assertEquals(1, kSession.fireAllRules());
-        System.out.println(" ---- Finished test20PersonsInARoom() Test ---");
+        Assert.assertEquals(20, kSession.fireAllRules());
+        System.out.println(" ---- Finished testSlowServiceInAGlobal() Test ---");
         kSession.dispose();
     }
-   
-    
+
+    @Test
+    public void testServiceCallInRHS() {
+        Assert.assertNotNull(kBase);
+        KieSession kSession = kBase.newKieSession();
+
+        kSession.setGlobal("myDataProviderService", new MyDataProviderServiceImpl());
+        System.out.println(" ---- Starting testServiceCallInRHS() Test ---");
+
+        University university = new University("My Uni");
+        FactHandle univFactHandle = kSession.insert(university);
+
+        Assert.assertEquals(50, kSession.fireAllRules());
+        university.setName("My Uni (updated)");
+        kSession.update(univFactHandle, university);
+        Assert.assertEquals(50, kSession.fireAllRules());
+        
+        System.out.println(" ---- Finished testServiceCallInRHS() Test ---");
+        kSession.dispose();
+    }
+
     private List<Person> generatePersons(int amount) {
         List<Person> results = new ArrayList<Person>();
         for (int i = 0; i < amount; i++) {
@@ -103,5 +96,4 @@ public class AccumulationRulesJUnitTest {
         }
         return results;
     }
-
 }

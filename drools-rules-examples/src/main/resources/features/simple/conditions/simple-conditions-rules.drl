@@ -10,7 +10,6 @@ rule "There is a person, let me know"
         System.out.println(" >>> there is a new Person: "+$p.toString());
 end
 
-/*
 rule "There is an adult, let me know"
     when
         $p: Person( age >= 18 )
@@ -45,4 +44,3 @@ rule "There is Student from Westminster univ, let me know"
     then
         System.out.println(" >>> there is a new Student from Westminster univ: "+$s.toString());
 end
-*/

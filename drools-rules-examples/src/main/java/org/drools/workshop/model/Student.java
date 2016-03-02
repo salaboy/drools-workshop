@@ -17,6 +17,12 @@ public class Student extends Person{
         this.university = university;
     }
 
+    public Student(String university, Person p) {
+        super(p.getName(), p.getAge(), p.getEmail(), p.getCity(), p.getGender());
+    }
+    
+    
+
     public String getUniversity() {
         return university;
     }

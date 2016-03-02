@@ -30,21 +30,21 @@ public class RulesJUnitTest {
 
     @Deployment
     public static JavaArchive createDeployment() {
-        
+
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-//        System.out.println(jar.toString(true));
+        System.out.println(jar.toString(true));
         return jar;
     }
-    
+
     @Inject
     @KSession
     private KieSession kSession;
-   
-     @Test
-     public void hello() {
+
+    @Test
+    public void hello() {
         Assert.assertNotNull(kSession);
         kSession.insert("Hi There From Test!");
         Assert.assertEquals(1, kSession.fireAllRules());
-     }
+    }
 }

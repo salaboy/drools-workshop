@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.drools.workshop;
+package org.drools.workshop.features;
 
+import org.drools.workshop.pitfalls.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -46,7 +47,7 @@ public class MultiConditionRulesJUnitTest {
     }
 
     @Inject
-    @KBase("rules03")
+    @KBase("multiConditionsKBase")
     private KieBase kBase;
 
     @Test
@@ -64,41 +65,6 @@ public class MultiConditionRulesJUnitTest {
         kSession.dispose();
     }
 
-    @Test
-    public void testPersonsAnd2Rooms() {
-        Assert.assertNotNull(kBase);
-        KieSession kSession = kBase.newKieSession();
-        System.out.println(" ---- Starting testPersonsAnd2Rooms() Test ---");
-        Room livingRoom = new Room("living room 2", 10);
-        kSession.insert(livingRoom);
-        Room kitchen = new Room("kitchen", 3);
-        kSession.insert(kitchen);
-        Person person = new Person("salaboy 2", 32, "salaboy@mail.com", "London", Gender.MALE);
-        kSession.insert(person);
-
-        Assert.assertEquals(2, kSession.fireAllRules());
-        System.out.println(" ---- Finished testPersonsAnd2Rooms() Test ---");
-        kSession.dispose();
-    }
-    
-    @Test
-    public void test2PersonsAnd2Rooms() {
-        Assert.assertNotNull(kBase);
-        KieSession kSession = kBase.newKieSession();
-        System.out.println(" ---- Starting test2PersonsAnd2Rooms() Test ---");
-        Room livingRoom = new Room("living room", 10);
-        kSession.insert(livingRoom);
-        Room kitchen = new Room("kitchen", 3);
-        kSession.insert(kitchen);
-        Person salaboy = new Person("salaboy", 32, "salaboy@mail.com", "London", Gender.MALE);
-        kSession.insert(salaboy);
-        Person maryland = new Person("maryland", 25, "maryland@supreme.com", "USA", Gender.MALE);
-        kSession.insert(maryland);
-
-        Assert.assertEquals(4, kSession.fireAllRules());
-        System.out.println(" ---- Finished test2PersonsAnd2Rooms() Test ---");
-        kSession.dispose();
-    }
     
     @Test
     public void testRoomAndHouse() {
@@ -135,13 +101,6 @@ public class MultiConditionRulesJUnitTest {
         kSession.dispose();
     }
    
-    
-//    private List<Person> generatePersons(int amount) {
-//        List<Person> results = new ArrayList<Person>();
-//        for (int i = 0; i < amount; i++) {
-//            results.add(new Person("name " + i, (int) Math.round(Math.random()) % 100, "name" + i + "@mail.com", "Somewhere", ((i % 2) == 1) ? Gender.FEMALE : Gender.MALE));
-//        }
-//        return results;
-//    }
+
 
 }

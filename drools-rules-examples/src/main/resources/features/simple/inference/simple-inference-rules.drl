@@ -1,0 +1,25 @@
+package org.drools.workshop;
+
+import org.drools.workshop.model.*;
+
+
+declare StudentBusPass
+    @key student: Student
+end
+
+rule "A person enrolled in a university is a student"
+    when
+        $p: Person(age > 18)
+        $u: University(enrolled.contains($p))
+    then
+        insert(new Student($u.getName(),$p));
+end
+
+rule "A Student is elegible for a free bus pass"
+    when
+        $s: Student()
+    then
+        insert(new StudentBusPass($s));
+end
+
+

@@ -1,23 +1,40 @@
 <kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <kbase name="rules01" packages="rules01"> 
-        <ksession name="rules01KSession"/>
+    <kbase name="simpleConditionsKBase" packages="features.simple.conditions"> 
+        <ksession name="simpleConditionsKSession"/>
     </kbase>
-    <kbase name="rules02" packages="rules02"> 
-        <ksession name="rules02KSession"/>
+    <kbase name="multiConditionsKBase" packages="features.multi.conditions"> 
+        <ksession name="multiConditionsKSession"/>
     </kbase>
-    <kbase name="rules03" packages="rules03"> 
-        <ksession name="rules03KSession"/>
+    <kbase name="simpleInferenceKBase" packages="features.simple.inference"> 
+        <ksession name="simpleInferenceKSession"/>
     </kbase>
-    <kbase name="rules04" packages="rules04"> 
-        <ksession name="rules04KSession"/>
+    <kbase name="usingGlobalsKBase" packages="features.using.globals"> 
+        <ksession name="usingGlobalsKSession"/>
     </kbase>
-    <kbase name="rules05" packages="rules05"> 
-        <ksession name="rules05KSession"/>
+    <kbase name="accumulationKBase" packages="features.accumulation"> 
+        <ksession name="accumulationKSession"/>
     </kbase>
-    <kbase name="rules06" packages="rules06"> 
-        <ksession name="rules06KSession"/>
+    <kbase name="queryKBase" packages="features.query"> 
+        <ksession name="queryKSession"/>
     </kbase>
-    <kbase name="rules07" packages="rules07"> 
-        <ksession name="rules07KSession"/>
+    <kbase name="tmsKBase" packages="features.tms"> 
+        <ksession name="tmsKSession"/>
     </kbase>
+
+    <kbase name="infiniteLoopKBase" packages="pitfalls.infinite.loop"> 
+        <ksession name="infiniteLoopKSession"/>
+    </kbase>
+    <kbase name="nonFactsKBase" packages="pitfalls.non.facts"> 
+        <ksession name="nonFactsKSession"/>
+    </kbase>
+    <kbase name="crossProductKBase" packages="pitfalls.cross.product"> 
+        <ksession name="crossProductKSession"/>
+    </kbase>
+    <kbase name="crossProductSolutionKBase" packages="pitfalls.cross.product.solution"> 
+        <ksession name="crossProductSolutionKSession"/>
+    </kbase>
+    <kbase name="wrongServiceKBase" packages="pitfalls.wrong.service"> 
+        <ksession name="wrongServiceKSession"/>
+    </kbase>
+   
 </kmodule>

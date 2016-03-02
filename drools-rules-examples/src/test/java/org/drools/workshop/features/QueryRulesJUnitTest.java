@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.drools.workshop;
+package org.drools.workshop.features;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,7 @@ public class QueryRulesJUnitTest {
     }
 
     @Inject
-    @KBase("rules06")
+    @KBase("queryKBase")
     private KieBase kBase;
 
     @Test

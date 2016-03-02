@@ -10,7 +10,7 @@ end
 
 rule "Track all persons that are in London"
     when
-        $p: Person( city == "London")
+        $p: Person( city == "London" )
     then
         insertLogical(new Tracker($p));
 end

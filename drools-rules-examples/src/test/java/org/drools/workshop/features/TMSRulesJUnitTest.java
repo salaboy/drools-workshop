@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.drools.workshop;
+package org.drools.workshop.features;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.inject.Inject;
 import org.drools.workshop.model.Person;
 import org.drools.workshop.model.Person.Gender;
@@ -27,10 +25,6 @@ import org.kie.api.event.rule.ObjectUpdatedEvent;
 import org.kie.api.event.rule.RuleRuntimeEventListener;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
-import org.kie.api.runtime.rule.QueryResults;
-import org.kie.api.runtime.rule.QueryResultsRow;
-import org.kie.api.runtime.rule.Row;
-import org.kie.api.runtime.rule.ViewChangedEventListener;
 
 /**
  *
@@ -53,7 +47,7 @@ public class TMSRulesJUnitTest {
     }
 
     @Inject
-    @KBase("rules07")
+    @KBase("tmsKBase")
     private KieBase kBase;
 
     @Test

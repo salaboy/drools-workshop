@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.drools.workshop;
+package org.drools.workshop.features;
 
 import javax.inject.Inject;
 import org.drools.workshop.model.Person;
@@ -17,7 +17,8 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kie.api.cdi.KSession;
+import org.kie.api.KieBase;
+import org.kie.api.cdi.KBase;
 import org.kie.api.event.rule.AfterMatchFiredEvent;
 import org.kie.api.event.rule.AgendaEventListener;
 import org.kie.api.event.rule.AgendaGroupPoppedEvent;
@@ -54,12 +55,13 @@ public class RulesWithListenersJUnitTest {
     }
 
     @Inject
-    @KSession("rules01KSession")
-    private KieSession kSession;
+    @KBase("simpleConditionsKBase")
+    private KieBase kBase;
 
     @Test
     public void testRulesWithListeners() {
-        Assert.assertNotNull(kSession);
+        Assert.assertNotNull(kBase);
+        KieSession kSession = kBase.newKieSession();
         System.out.println(" ---- Starting testRulesWithListeners() Test ---");
         kSession.addEventListener(new AgendaEventListener() {
 

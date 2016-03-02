@@ -13,7 +13,7 @@ import org.kie.api.runtime.KieSession;
 public class App {
 
     @Inject
-    @KSession()
+    @KSession
     private KieSession kSession;
 
     public void bootstrapDrools() {

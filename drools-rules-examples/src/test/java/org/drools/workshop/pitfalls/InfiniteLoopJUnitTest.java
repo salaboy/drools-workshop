@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.drools.workshop;
+package org.drools.workshop.pitfalls;
 
 import javax.inject.Inject;
 import org.drools.workshop.model.Person;
@@ -25,9 +25,9 @@ import org.kie.api.runtime.KieSession;
  * @author salaboy
  */
 @RunWith(Arquillian.class)
-public class LoopingRulesJUnitTest {
+public class InfiniteLoopJUnitTest {
 
-    public LoopingRulesJUnitTest() {
+    public InfiniteLoopJUnitTest() {
     }
 
     @Deployment
@@ -41,7 +41,7 @@ public class LoopingRulesJUnitTest {
     }
 
     @Inject
-    @KSession("rules02KSession")
+    @KSession("infiniteLoopKSession")
     private KieSession kSession;
 
     @Test
