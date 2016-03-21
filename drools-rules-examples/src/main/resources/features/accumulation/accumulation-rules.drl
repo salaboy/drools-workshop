@@ -16,7 +16,7 @@ end
 
 rule "calculate avg age"
     when  
-        $avg: Double() from accumulate (Person($age: age), average($age))
+        $avg: Double(value > 50) from accumulate (Person($age: age), average($age))
     then
         System.out.println(">>> The average age is "+ $avg);
 end

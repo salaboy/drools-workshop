@@ -1,0 +1,39 @@
+package org.drools.workshop.food;
+import org.drools.workshop.food.model.*;
+import org.drools.workshop.food.model.ingredients.*;
+
+query getMeal()
+    $m: Meal()
+end
+
+
+rule "Salad for Healthy Girls"
+    when
+        Person(gender == Gender.FEMALE, activities.contains("running") )
+    then
+        insert(new Salad());
+end
+
+
+rule "Quick Sandwich for IT Guys"
+    when
+        Person( gender == Gender.MALE, activities.contains("IT") )
+    then
+        insert(new Sandwich());
+end
+
+rule "Ingredients based on age range 20 - 30"
+    when
+        $p: Person(age >= 20 && < 30)    
+        $m: Meal()
+    then
+        $m.addIngredient(new Bacon());
+end
+
+rule "Ingredients based on age range 30 - 40"
+    when
+        $p: Person(age >= 30 && < 40)    
+        $m: Meal()
+    then
+        $m.addIngredient(new Egg());
+end
