@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.drools.workshop.food;
+package org.drools.workshop.restaurant;
 
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class App {
         Container container = new Container();
 
         JAXRSArchive deployment = ShrinkWrap.create(JAXRSArchive.class);
-        deployment.as(TopologyArchive.class).advertise("foodService");
+        deployment.as(TopologyArchive.class).advertise("restaurantService");
         deployment.setContextRoot("/api");
         deployment.addAsLibrary(container.createDefaultDeployment());
         deployment.addAllDependencies();
@@ -43,5 +43,6 @@ public class App {
         for(String key : asMap.keySet()){
             System.out.println("Key: "+ key + " - Value: "+asMap.get(key));
         }
+        
     }
 }

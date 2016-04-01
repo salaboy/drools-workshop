@@ -24,29 +24,37 @@ import org.kie.api.runtime.KieSession;
  * @author salaboy
  */
 @RunWith(Arquillian.class)
-public class RulesJUnitTest {
+public class BusinessScopedRulesJUnitTest {
 
-    public RulesJUnitTest() {
+    public BusinessScopedRulesJUnitTest() {
     }
 
     @Deployment
     public static JavaArchive createDeployment() {
-        
+
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
+                .addPackages(true, "org.drools.workshop")
+                .addAsServiceProvider(BusinessScopeExtension.class, BusinessScopeContext.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-//        System.out.println(jar.toString(true));
+        System.out.println(jar.toString(true));
         return jar;
     }
-    
+
     @Inject
-    @KSession
-    @KReleaseId(groupId = "org.drools.workshop",artifactId = "my-first-drools-kjar", version = "1.0-SNAPSHOT")
-    private KieSession kSession;
-   
-     @Test
-     public void hello() {
-        Assert.assertNotNull(kSession);
-        kSession.insert("Hi There From Test!");
-        Assert.assertEquals(1, kSession.fireAllRules());
-     }  
+    private BusinessScopedRules bsr;
+    
+
+    @Test
+    public void hello() {
+        Assert.assertNotNull(bsr);
+        bsr.getkSession().insert("Hi There From Test 1!");
+        Assert.assertEquals(1, bsr.getkSession().fireAllRules());
+    }
+    
+    @Test
+    public void hello2() {
+        Assert.assertNotNull(bsr);
+        bsr.getkSession().insert("Hi There From Test 2!");
+        Assert.assertEquals(1, bsr.getkSession().fireAllRules());
+    }
 }
