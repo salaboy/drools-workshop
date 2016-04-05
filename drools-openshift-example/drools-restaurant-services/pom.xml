@@ -42,8 +42,16 @@
         </dependency>
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
-            <artifactId>topology-openshift</artifactId>
+            <artifactId>topology-jgroups</artifactId>
         </dependency>
+<!--        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>topology-openshift</artifactId>
+        </dependency>-->
+<!--        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>monitor</artifactId>
+        </dependency>-->
         <dependency>
             <groupId>org.kie</groupId>
             <artifactId>kie-api</artifactId>
@@ -98,6 +106,10 @@
                 <version>${version.wildfly-swarm}</version>
                 <configuration>
                     <mainClass>org.drools.workshop.restaurant.App</mainClass>
+                    <properties>
+                        <swarm.bind.address>127.0.0.1</swarm.bind.address>
+                        <java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
+                    </properties>
                 </configuration>
                 <executions>
                     <execution>

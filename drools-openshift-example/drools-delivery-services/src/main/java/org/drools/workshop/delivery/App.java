@@ -27,6 +27,7 @@ public class App {
         JAXRSArchive deployment = ShrinkWrap.create(JAXRSArchive.class);
         deployment.as(TopologyArchive.class).advertise("deliveryService");
         deployment.setContextRoot("/api");
+        deployment.addPackages(true, "org.jboss.shrinkwrap.api");
         deployment.addAsLibrary(container.createDefaultDeployment());
         deployment.addAllDependencies();
         container.start();
@@ -36,13 +37,19 @@ public class App {
         lookup.addListener(new TopologyListener() {
             @Override
             public void onChange(Topology tplg) {
-                System.out.println("Delivery Service: The Topology Has Changed!");
+                System.out.println(">>> Delivery Service: The Topology Has Changed!");
+                printTopology(lookup);
             }
         });
+        
+        printTopology(lookup);
+        
+    }
+    
+    public static void printTopology(Topology lookup){
         Map<String, List<Topology.Entry>> asMap = lookup.asMap();
         for(String key : asMap.keySet()){
             System.out.println("Key: "+ key + " - Value: "+asMap.get(key));
         }
-        
     }
 }
