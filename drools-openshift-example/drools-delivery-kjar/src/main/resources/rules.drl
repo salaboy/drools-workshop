@@ -1,0 +1,16 @@
+package org.drools.workshop.delivery;
+import org.drools.workshop.delivery.model.*;
+
+query getDelivery()
+    $d: Delivery()
+end
+
+
+rule "New Delivery"
+    when
+        Delivery()
+    then
+        System.out.println("New Delivery Tracking...");
+end
+
+

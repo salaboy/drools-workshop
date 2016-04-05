@@ -8,14 +8,14 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     
-    <artifactId>drools-food-services</artifactId>
+    <artifactId>drools-delivery-services</artifactId>
     <packaging>jar</packaging>
 
-    <name>Drools Openshift :: Food Services</name>
+    <name>Drools Openshift :: Delivery Services</name>
     <url>http://salaboy.com</url>
 
     <properties>
-        <docker.image>salaboy/drools-food-services:latest</docker.image>
+        <docker.image>salaboy/drools-delivery-services:latest</docker.image>
     </properties>
     
 
@@ -44,6 +44,11 @@
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>topology-jgroups</artifactId>
         </dependency>
+<!--        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>topology-openshift</artifactId>
+            <version>${version.wildfly-swarm}</version>
+        </dependency>-->
         <dependency>
             <groupId>org.kie</groupId>
             <artifactId>kie-api</artifactId>
@@ -72,7 +77,7 @@
         </dependency>
         <dependency>
             <groupId>org.drools.workshop</groupId>
-            <artifactId>drools-food-model</artifactId>
+            <artifactId>drools-delivery-model</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -97,7 +102,7 @@
                 <artifactId>wildfly-swarm-plugin</artifactId>
                 <version>${version.wildfly-swarm}</version>
                 <configuration>
-                    <mainClass>org.drools.workshop.food.App</mainClass>
+                    <mainClass>org.drools.workshop.delivery.App</mainClass>
                 </configuration>
                 <executions>
                     <execution>
@@ -122,7 +127,7 @@
                                     <port>8080</port>
                                 </ports>
                                 <entryPoint>
-                                    <shell>java -Dkie.maven.settings.custom=/opt/wildfly-swarm/settings.xml -jar /opt/wildfly-swarm/drools-food-services.jar</shell>
+                                    <shell>java -Dkie.maven.settings.custom=/opt/wildfly-swarm/settings.xml -jar /opt/wildfly-swarm/drools-delivery-services.jar</shell>
                                     <!--                                    <exec>
                                         <arg>java</arg>
                                         <arg>-Dkie.maven.settings.custom=/opt/wildfly-swarm/settings.xml</arg>
@@ -136,9 +141,9 @@
                                             <dependencySet>
                                                 <useProjectAttachments>true</useProjectAttachments>
                                                 <includes>
-                                                    <include>org.drools.workshop:drools-food-services:jar:swarm</include>
+                                                    <include>org.drools.workshop:drools-delivery-services:jar:swarm</include>
                                                 </includes>
-                                                <outputFileNameMapping>drools-food-services.jar</outputFileNameMapping>
+                                                <outputFileNameMapping>drools-delivery-services.jar</outputFileNameMapping>
                                             </dependencySet>
                                         </dependencySets>
                                         <fileSets>

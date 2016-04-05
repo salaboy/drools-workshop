@@ -15,15 +15,7 @@
     <url>http://salaboy.com</url>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kie.version>6.4.0.CR1</kie.version>
-        <junit.version>4.11</junit.version>
-        <cdi.version>1.2</cdi.version>
-        <version.wildfly-swarm>1.0.0.Alpha8</version.wildfly-swarm>
-        <docker.from>jboss/base-jdk:8</docker.from> 
-        <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
-        <docker.assemblyDescriptorRef>artifact</docker.assemblyDescriptorRef>
-        <docker.image>salaboy/drools-food-services:latest</docker.image>
+        <docker.image>salaboy/drools-restaurant-services:latest</docker.image>
     </properties>
     
 
@@ -43,17 +35,14 @@
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>jaxrs-weld</artifactId>
-            <version>${version.wildfly-swarm}</version>
         </dependency>
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>topology</artifactId>
-            <version>${version.wildfly-swarm}</version>
         </dependency>
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>topology-openshift</artifactId>
-            <version>${version.wildfly-swarm}</version>
         </dependency>
         <dependency>
             <groupId>org.kie</groupId>
