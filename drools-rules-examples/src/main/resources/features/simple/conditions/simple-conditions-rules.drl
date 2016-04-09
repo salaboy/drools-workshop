@@ -38,7 +38,7 @@ rule "There is a Female adult from London, let me know"
         System.out.println(" >>> there is a new Female Adult from London: "+$p.toString());
 end
 
-rule "There is Student from Westminster univ, let me know"
+rule "There is a Student from Westminster univ, let me know"
     when
         $s: Student( age >= 18, city == "London", university == "Westminster" )
     then

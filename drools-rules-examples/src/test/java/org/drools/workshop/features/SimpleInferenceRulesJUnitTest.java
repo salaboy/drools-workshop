@@ -7,10 +7,12 @@ package org.drools.workshop.features;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import org.drools.workshop.model.Person;
 import org.drools.workshop.model.Person.Gender;
+import org.drools.workshop.model.Student;
 import org.drools.workshop.model.University;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -50,18 +52,16 @@ public class SimpleInferenceRulesJUnitTest {
     private KieBase kBase;
 
     @Test
-    public void testEnrolledStudentsGetFreeBusTickets() {
+    public void testYoungEnrolledStudentsGetBusTicketDiscount() {
         Assert.assertNotNull(kBase);
         KieSession kSession = kBase.newKieSession();
         System.out.println(" ---- Starting testEnrolledStudentsGetFreeBusTickets() Test ---");
         
-        Person person = new Person("salaboy", 32, "salaboy@mail.com", "London", Gender.MALE);
+        Person person = new Person("John", 29, "john@mail.com", "London", Gender.MALE);
         kSession.insert(person);
-        List<Person> enrolled = new ArrayList<Person>();
-        enrolled.add(person);
         
         University university = new University("My uni");
-        university.setEnrolled(enrolled);
+        university.setEnrolled(Arrays.asList(person));
         
         kSession.insert(university);
         

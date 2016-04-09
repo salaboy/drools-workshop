@@ -18,8 +18,8 @@ end
 rule "room from a house"
     when
         $r: Room()
-        $h: House(rooms != null , rooms.contains($r))
+        $h: House(rooms contains $r)
     then
         System.out.println("There is a Room: "+ $r);
-        System.out.println("And There is a House: "+ $h);
+        System.out.println("And There is a House containing it: "+ $h);
 end
