@@ -18,8 +18,7 @@ end
 
 rule "overcrowded room"
     when
-        $r: Room()
-        List($amount: size > $r.getCapacity()) from collect (Person() from $r.getPersons())
+        $r: Room(persons!.size > capacity)
     then
         myService.notify(drools.getRule().getName());
 end

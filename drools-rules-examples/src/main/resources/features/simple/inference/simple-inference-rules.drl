@@ -3,23 +3,24 @@ package org.drools.workshop;
 import org.drools.workshop.model.*;
 
 
-declare StudentBusPass
-    @key student: Student
+declare BusPass
+    person: Person @key 
+    discount: double
 end
 
-rule "A person enrolled in a university is a student"
+rule "A Person enrolled in a University gets a Bus Pass"
     when
-        $p: Person(age > 18)
-        $u: University(enrolled.contains($p))
+        $p: Person()
+        $u: University(enrolled contains $p)
     then
-        insert(new Student($u.getName(),$p));
+        insert(new BusPass($p));
 end
 
-rule "A Student is elegible for a free bus pass"
+rule "Bus Passes for Young People get 10% discount"
     when
-        $s: Student()
+        $bp: BusPass(person.(age >= 18, age <= 30))
     then
-        insert(new StudentBusPass($s));
+        $bp.setDiscount(0.1);
 end
 
 
