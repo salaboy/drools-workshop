@@ -27,8 +27,10 @@
                 <version>${version.wildfly-swarm}</version>
                 <configuration>
                     <mainClass>org.drools.workshop.server.swarm.App</mainClass>
+                    <!--<debug>8089</debug>-->
                     <properties>
                         <swarm.port.offset>3</swarm.port.offset>
+                  
                     </properties>
                 </configuration>
                 <executions>
