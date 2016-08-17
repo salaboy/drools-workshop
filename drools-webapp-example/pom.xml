@@ -70,6 +70,78 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.wildfly.swarm</groupId>
+                <artifactId>wildfly-swarm-plugin</artifactId>
+                <version>1.0.0.Beta8</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.15.0</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>salaboy/drools-webapp-example</name>
+                            <build>
+                                <from>jboss/base-jdk:8</from>
+                                <maintainer>salaboy@gmail.com</maintainer>
+                                <ports>
+                                    <port>8080</port>
+                                </ports>
+                                <volumes>
+                                    <volume>/deploy/</volume>
+                                </volumes>
+                                <entryPoint>
+                                    <exec>
+                                        <arg>java</arg>
+                                        <arg>-jar</arg>
+                                        <arg>/opt/wildfly-swarm/drools-webapp-example.jar</arg>
+                                    </exec>
+                                </entryPoint>
+                                <assembly>
+                                    <inline>
+                                        <dependencySets>
+                                            <dependencySet>
+                                                <useProjectAttachments>true</useProjectAttachments>
+                                                <includes>
+                                                    <include>org.drools.example:drools-webapp-example:jar:swarm</include>
+                                                </includes>
+                                                <outputFileNameMapping>drools-webapp-example.jar</outputFileNameMapping>
+                                            </dependencySet>
+                                        </dependencySets>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/docker</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>settings.xml</include>
+                                                </includes>
+                                                <fileMode>755</fileMode>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                    <user>jboss:jboss:jboss</user>
+                                    <basedir>/opt/wildfly-swarm</basedir>
+                                </assembly>
+                            </build>
+                            <run>
+                                <ports>
+                                    <port>8080:8080</port>
+                                </ports>
+                            </run>
+                        </image>
+                    </images>
+
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
