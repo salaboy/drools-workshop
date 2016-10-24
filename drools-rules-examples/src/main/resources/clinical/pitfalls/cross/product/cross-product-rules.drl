@@ -1,0 +1,15 @@
+package org.drools.workshop.clinical;
+
+import org.drools.workshop.misc.model.*;
+import org.drools.workshop.misc.model.Person.*;
+import java.util.List;
+
+
+rule "Room and House"
+    when
+        $r: Room()
+        $h: House()
+    then
+        System.out.println("There is a Room: "+ $r);
+        System.out.println("And There is a House: "+ $h);
+end

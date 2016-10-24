@@ -1,0 +1,15 @@
+package org.drools.workshop.misc;
+
+import org.drools.workshop.misc.model.*;
+import org.drools.workshop.misc.model.Person.*;
+
+rule "If age less than 40, reset city"
+    when
+        $p: Person( age <= 40 )
+    then
+        System.out.println("Updating Person: "+$p);
+        modify($p){
+            setCity("")
+        }
+end
+

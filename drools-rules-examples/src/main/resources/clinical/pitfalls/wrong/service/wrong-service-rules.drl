@@ -1,0 +1,26 @@
+package org.drools.workshop.clinical;
+
+import org.drools.workshop.misc.model.*;
+import org.drools.workshop.misc.model.Person.*;
+import java.util.List;
+import org.drools.workshop.misc.services.*;
+
+global MyService myService;
+global MyDataProviderService myDataProviderService;
+
+
+rule "Simple But Slow Rule"
+    when
+        $p: Person()
+    then
+        myService.notify(drools.getRule().getName());
+end
+
+
+rule "Using from to access external Service"
+    when
+        $u: University()
+        $p: Person() from myDataProviderService.getPersons()
+    then
+        System.out.println("Loaded Person: "+ $p); 
+end

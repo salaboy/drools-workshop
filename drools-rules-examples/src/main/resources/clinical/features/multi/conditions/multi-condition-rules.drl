@@ -1,0 +1,25 @@
+package org.drools.workshop.clinical;
+
+import org.drools.workshop.misc.model.*;
+import org.drools.workshop.misc.model.Person.*;
+import java.util.List;
+
+rule "room and a person"
+    when
+        $r: Room()
+        $p: Person()
+    then
+        System.out.println("There is a Room: "+ $r);
+        System.out.println("And There is a Person: "+ $p);
+end
+
+
+
+rule "room from a house"
+    when
+        $r: Room()
+        $h: House(rooms contains $r)
+    then
+        System.out.println("There is a Room: "+ $r);
+        System.out.println("And There is a House containing it: "+ $h);
+end

@@ -1,40 +1,37 @@
 <kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <kbase name="simpleConditionsKBase" packages="features.simple.conditions"> 
-        <ksession name="simpleConditionsKSession"/>
+    <!-- Misc -->
+    <kbase name="misc-simpleConditionsKBase" packages="misc.features.simple.conditions">
+        <ksession name="misc-simpleConditionsKSession"/>
     </kbase>
-    <kbase name="multiConditionsKBase" packages="features.multi.conditions"> 
-        <ksession name="multiConditionsKSession"/>
+    <kbase name="misc-multiConditionsKBase" packages="misc.features.multi.conditions"/> 
+    <kbase name="misc-simpleInferenceKBase" packages="misc.features.simple.inference"/> 
+    <kbase name="misc-usingGlobalsKBase" packages="misc.features.using.globals"/> 
+    <kbase name="misc-accumulationKBase" packages="misc.features.accumulation"/> 
+    <kbase name="misc-queryKBase" packages="misc.features.query"/> 
+    <kbase name="misc-tmsKBase" packages="misc.features.tms"/> 
+    <kbase name="misc-infiniteLoopKBase" packages="misc.pitfalls.infinite.loop"> 
+        <ksession name="misc-infiniteLoopKSession"/>
     </kbase>
-    <kbase name="simpleInferenceKBase" packages="features.simple.inference"> 
-        <ksession name="simpleInferenceKSession"/>
-    </kbase>
-    <kbase name="usingGlobalsKBase" packages="features.using.globals"> 
-        <ksession name="usingGlobalsKSession"/>
-    </kbase>
-    <kbase name="accumulationKBase" packages="features.accumulation"> 
-        <ksession name="accumulationKSession"/>
-    </kbase>
-    <kbase name="queryKBase" packages="features.query"> 
-        <ksession name="queryKSession"/>
-    </kbase>
-    <kbase name="tmsKBase" packages="features.tms"> 
-        <ksession name="tmsKSession"/>
-    </kbase>
+    <kbase name="misc-nonFactsKBase" packages="misc.pitfalls.non.facts"/> 
+    <kbase name="misc-crossProductKBase" packages="misc.pitfalls.cross.product"/> 
+    <kbase name="misc-crossProductSolutionKBase" packages="misc.pitfalls.cross.product.solution"/> 
+    <kbase name="misc-wrongServiceKBase" packages="misc.pitfalls.wrong.service"/> 
 
-    <kbase name="infiniteLoopKBase" packages="pitfalls.infinite.loop"> 
-        <ksession name="infiniteLoopKSession"/>
+    <!-- Clinical -->
+    <kbase name="clinical-simpleConditionsKBase" packages="clinical.features.simple.conditions"> 
+        <ksession name="clinical-simpleConditionsKSession"/>
     </kbase>
-    <kbase name="nonFactsKBase" packages="pitfalls.non.facts"> 
-        <ksession name="nonFactsKSession"/>
+    <kbase name="clinical-multiConditionsKBase" packages="clinical.features.multi.conditions"/> 
+    <kbase name="clinical-simpleInferenceKBase" packages="clinical.features.simple.inference"/> 
+    <kbase name="clinical-usingGlobalsKBase" packages="clinical.features.using.globals"/> 
+    <kbase name="clinical-accumulationKBase" packages="clinical.features.accumulation"/> 
+    <kbase name="clinical-queryKBase" packages="clinical.features.query"/> 
+    <kbase name="clinical-tmsKBase" packages="clinical.features.tms"/> 
+    <kbase name="clinical-infiniteLoopKBase" packages="clinical.pitfalls.infinite.loop"> 
+        <ksession name="clinical-infiniteLoopKSession"/>
     </kbase>
-    <kbase name="crossProductKBase" packages="pitfalls.cross.product"> 
-        <ksession name="crossProductKSession"/>
-    </kbase>
-    <kbase name="crossProductSolutionKBase" packages="pitfalls.cross.product.solution"> 
-        <ksession name="crossProductSolutionKSession"/>
-    </kbase>
-    <kbase name="wrongServiceKBase" packages="pitfalls.wrong.service"> 
-        <ksession name="wrongServiceKSession"/>
-    </kbase>
-   
+    <kbase name="clinical-nonFactsKBase" packages="clinical.pitfalls.non.facts"/> 
+    <kbase name="clinical-crossProductKBase" packages="clinical.pitfalls.cross.product"/> 
+    <kbase name="clinical-crossProductSolutionKBase" packages="clinical.pitfalls.cross.product.solution"/> 
+    <kbase name="clinical-wrongServiceKBase" packages="clinical.pitfalls.wrong.service"/> 
 </kmodule>

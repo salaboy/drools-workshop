@@ -1,0 +1,26 @@
+package org.drools.workshop.clinical;
+
+import org.drools.workshop.misc.model.*;
+
+
+declare BusPass
+    person: Person @key 
+    discount: double
+end
+
+rule "A Person enrolled in a University gets a Bus Pass"
+    when
+        $p: Person()
+        $u: University(enrolled contains $p)
+    then
+        insert(new BusPass($p));
+end
+
+rule "Bus Passes for Young People get 10% discount"
+    when
+        $bp: BusPass(person.(age >= 18, age <= 30))
+    then
+        $bp.setDiscount(0.1);
+end
+
+
