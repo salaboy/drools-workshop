@@ -5,9 +5,15 @@
  */
 package org.drools.workshop.clinical.features;
 
+import ca.uhn.fhir.model.dstu2.composite.AddressDt;
+import ca.uhn.fhir.model.dstu2.resource.Patient;
+import ca.uhn.fhir.model.dstu2.valueset.AdministrativeGenderEnum;
+import ca.uhn.fhir.model.primitive.DateDt;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.inject.Inject;
-import org.drools.workshop.misc.model.Person;
-import org.drools.workshop.misc.model.Student;
+import org.drools.workshop.clinical.model.AsthmaticPatient;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -45,43 +51,66 @@ public class SimpleConditionsRulesJUnitTest {
     private KieSession kSession;
 
     @Test
-    public void testPersonRulesWithJustAPerson() {
+    public void testPatientRulesWithJustAPatient() {
         Assert.assertNotNull(kSession);
-        System.out.println(" ---- Starting testPersonRulesWithJustAPerson() Test ---");
+        System.out.println(" ---- Starting testPatientRulesWithJustAPatient() Test ---");
 
-        kSession.insert(new Person());
+        kSession.insert(new Patient().setId("1"));
         
         Assert.assertEquals(1, kSession.fireAllRules());
-        System.out.println(" ---- Finished testPersonRulesWithJustAPerson() Test ---");
+        System.out.println(" ---- Finished testPatientRulesWithJustAPatient() Test ---");
     }
 
     @Test
-    public void testPersonRulesWithAnAdultPerson() {
+    public void testPatientRulesWithAPatientFrom82() {
         Assert.assertNotNull(kSession);
-        System.out.println(" ---- Starting testPersonRulesWithAnAdultPerson() Test ---");
-        kSession.insert(new Person("salaboy", 32, "salaboy@mail.com", "somewhere", Person.Gender.MALE));
+        System.out.println(" ---- Starting testPatientRulesWithAnPatientFrom82() Test ---");
+        kSession.insert(new Patient()
+            .setBirthDateWithDayPrecision(parseDate("1982-01-01"))
+            .setId("1")
+        );
 
         Assert.assertEquals(2, kSession.fireAllRules());
-        System.out.println(" ---- Finished testPersonRulesWithAnAdultPerson() Test ---");
+        System.out.println(" ---- Finished testPatientRulesWithAnPatientFrom82() Test ---");
     }
 
     @Test
-    public void testPersonRulesWithAnAdultPersonFromLondon() {
+    public void testPatientRulesWithAPatientFromLondonFrom82() {
         Assert.assertNotNull(kSession);
-        System.out.println(" ---- Starting testPersonRulesWithAnAdultPersonFromLondon() Test ---");
-        kSession.insert(new Person("salaboy", 32, "salaboy@mail.com", "London", Person.Gender.MALE));
+        System.out.println(" ---- Starting testPatientRulesWithAPatientFromLondonFrom82() Test ---");
+        kSession.insert(new Patient()
+            .setBirthDateWithDayPrecision(parseDate("1982-01-01"))
+            .setGender(AdministrativeGenderEnum.MALE)
+            .addAddress(new AddressDt().setCity("London"))
+            .setId("1")
+        );
 
         Assert.assertEquals(4, kSession.fireAllRules());
-        System.out.println(" ---- Finished testPersonRulesWithAnAdultPersonFromLondon() Test ---");
+        System.out.println(" ---- Finished testPatientRulesWithAPatientFromLondonFrom82() Test ---");
     }
 
     @Test
-    public void testPersonRulesInheritanceWithAStudent() {
+    public void testPatientRulesInheritanceInModel() {
         Assert.assertNotNull(kSession);
-        System.out.println(" ---- Starting testPersonRulesInheritanceWithAStudent() Test ---");
-        kSession.insert(new Student("Westminster", "salaboy", 32, "salaboy@mail.com", "London", Person.Gender.MALE));
+        System.out.println(" ---- Starting testPatientRulesInheritanceInModel() Test ---");
+        
+        kSession.insert(new AsthmaticPatient()
+            .setDiagnosedDate(new DateDt(parseDate("2014-06-07")))
+            .setBirthDateWithDayPrecision(parseDate("1982-01-01"))
+            .setGender(AdministrativeGenderEnum.MALE)
+            .addAddress(new AddressDt().setCity("London"))
+            .setId("1")
+        );
 
         Assert.assertEquals(5, kSession.fireAllRules());
-        System.out.println(" ---- Finished testPersonRulesInheritanceWithAStudent() Test ---");
+        System.out.println(" ---- Finished testPatientRulesInheritanceInModel() Test ---");
+    }
+    
+    private Date parseDate(String date){
+        try {
+            return new SimpleDateFormat("yyyy-mm-dd").parse(date);
+        } catch (ParseException ex) {
+            throw new IllegalArgumentException(ex);
+        }
     }
 }

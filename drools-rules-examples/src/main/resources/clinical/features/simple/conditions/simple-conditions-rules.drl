@@ -1,46 +1,63 @@
 package org.drools.workshop.clinical;
 
-import org.drools.workshop.misc.model.*;
-import org.drools.workshop.misc.model.Person.*;
+import ca.uhn.fhir.model.dstu2.resource.Patient;
+import ca.uhn.fhir.model.dstu2.valueset.AdministrativeGenderEnum;
 
-rule "There is a person, let me know"
+import org.drools.workshop.clinical.model.AsthmaticPatient;
+
+rule "There is a patient, let me know"
     when
-        $p: Person()
+        $p: Patient()
     then
-        System.out.println(" >>> there is a new Person: "+$p.toString());
+        System.out.println(" >>> there is a new Patient: "+$p.toString());
 end
 
-rule "There is an adult, let me know"
+rule "There is a patient born before 1983, let me know"
     when
-        $p: Person( age >= 18 )
+        $p: Patient( birthDateElement.getYear < 1983 )
     then
-        System.out.println(" >>> there is a new Adult: "+$p.toString());
+        System.out.println(" >>> there is a new Patient born before 1983: "+$p.toString());
 end
 
-rule "There is an adult from London, let me know"
+rule "There is a patient born before 1983 from London, let me know"
     when
-        $p: Person( age >= 18, city == "London" )
+        $p: Patient( 
+            birthDateElement.year < 1983, 
+            addressFirstRep.city == "London" 
+        )
     then
-        System.out.println(" >>> there is a new Adult from London: "+$p.toString());
+        System.out.println(" >>> there is a new Patient from London born before 1983: "+$p.toString());
 end
 
-rule "There is a Male adult from London, let me know"
+rule "There is a Male patient born before 1983 from London, let me know"
     when
-        $p: Person( age >= 18, city == "London", gender == Gender.MALE )
+        $p: Patient(
+            birthDateElement.year < 1983, 
+            addressFirstRep.city == "London", 
+            gender == AdministrativeGenderEnum.MALE.code
+        )
     then
-        System.out.println(" >>> there is a new Male Adult from London: "+$p.toString());
+        System.out.println(" >>> there is a new Male Patient from London born before 1983: "+$p.toString());
 end
 
-rule "There is a Female adult from London, let me know"
+rule "There is a Female patient born before 1983 from London, let me know"
     when
-        $p: Person( age >= 18, city == "London", gender == Gender.FEMALE )
+        $p: Patient(
+            birthDateElement.year < 1983, 
+            addressFirstRep.city == "London", 
+            gender == AdministrativeGenderEnum.FEMALE.code
+        )
     then
-        System.out.println(" >>> there is a new Female Adult from London: "+$p.toString());
+        System.out.println(" >>> there is a new Female Patient from London born before 1983: "+$p.toString());
 end
 
-rule "There is a Student from Westminster univ, let me know"
+
+rule "There is an Asthmatic patient from London diagnosed before 2015, let me know"
     when
-        $s: Student( age >= 18, city == "London", university == "Westminster" )
+        $p: AsthmaticPatient( 
+            addressFirstRep.city == "London", 
+            diagnosedDate.year < 2015
+        )
     then
-        System.out.println(" >>> there is a new Student from Westminster univ: "+$s.toString());
+        System.out.println(" >>> there is a new Asthmatic patient from London diagnosed before 2015: "+$p.toString());
 end
