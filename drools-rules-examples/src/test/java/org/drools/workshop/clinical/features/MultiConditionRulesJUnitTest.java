@@ -5,6 +5,9 @@
  */
 package org.drools.workshop.clinical.features;
 
+import ca.uhn.fhir.model.dstu2.composite.ResourceReferenceDt;
+import ca.uhn.fhir.model.dstu2.resource.Observation;
+import ca.uhn.fhir.model.dstu2.resource.Patient;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -39,7 +42,7 @@ public class MultiConditionRulesJUnitTest {
     public static JavaArchive createDeployment() {
 
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
-                .addPackages(true, "org.drools.workshop.model")
+                .addPackages(true, "org.drools.workshop.clinical.model")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         //System.out.println(jar.toString(true));
         return jar;
@@ -50,52 +53,38 @@ public class MultiConditionRulesJUnitTest {
     private KieBase kBase;
 
     @Test
-    public void testPersonAndARoom() {
+    public void testPatientAndAnObservation() {
         Assert.assertNotNull(kBase);
         KieSession kSession = kBase.newKieSession();
-        System.out.println(" ---- Starting testPersonAndARoom() Test ---");
-        Room room = new Room("living room", 10);
-        kSession.insert(room);
-        Person person = new Person("salaboy", 32, "salaboy@mail.com", "London", Gender.MALE);
-        kSession.insert(person);
-
+        System.out.println(" ---- Starting testPatientAndAnObservation() Test ---");
+        
+        kSession.insert(new Patient()
+            .setId("Patient/1")
+        );
+        kSession.insert(new Observation()
+            .setId("Observation/1")
+        );
+        
         Assert.assertEquals(1, kSession.fireAllRules());
-        System.out.println(" ---- Finished testPersonAndARoom() Test ---");
+        System.out.println(" ---- Finished testPatientAndAnObservation() Test ---");
         kSession.dispose();
     }
 
     
     @Test
-    public void testRoomAndHouse() {
-        Assert.assertNotNull(kBase);
-        KieSession kSession = kBase.newKieSession();
-        System.out.println(" ---- Starting testRoomAndHouse() Test ---");
-        Room livingRoom = new Room("living room", 10);
-        kSession.insert(livingRoom);
-
-        House house = new House();
-        kSession.insert(house);
-
-        Assert.assertEquals(0, kSession.fireAllRules());
-        System.out.println(" ---- Finished testRoomAndHouse() Test ---");
-        kSession.dispose();
-    }
-    
-    @Test
-    public void testRoomAndHouseRelated() {
+    public void testPatientAndAnRelatedObservation() {
         Assert.assertNotNull(kBase);
         KieSession kSession = kBase.newKieSession();
         System.out.println(" ---- Starting testRoomAndHouseRelated() Test ---");
-        Room livingRoom = new Room("living room", 10);
-        kSession.insert(livingRoom);
+        
+        Patient patient = (Patient) new Patient().setId("Patient/1");
+        kSession.insert(patient);
+        kSession.insert(new Observation()
+            .setSubject(new ResourceReferenceDt(patient))
+            .setId("Observation/1")
+        );
 
-        House house = new House();
-        List<Room> rooms = new ArrayList<Room>();
-        rooms.add(livingRoom);
-        house.setRooms(rooms);
-        kSession.insert(house);
-
-        Assert.assertEquals(1, kSession.fireAllRules());
+        Assert.assertEquals(2, kSession.fireAllRules());
         System.out.println(" ---- Finished testRoomAndHouseRelated() Test ---");
         kSession.dispose();
     }

@@ -40,7 +40,7 @@ public class SimpleConditionsRulesJUnitTest {
     public static JavaArchive createDeployment() {
 
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
-                .addPackages(true, "org.drools.workshop.model")
+                .addPackages(true, "org.drools.workshop.clinical.model")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         //System.out.println(jar.toString(true));
         return jar;
@@ -55,7 +55,7 @@ public class SimpleConditionsRulesJUnitTest {
         Assert.assertNotNull(kSession);
         System.out.println(" ---- Starting testPatientRulesWithJustAPatient() Test ---");
 
-        kSession.insert(new Patient().setId("1"));
+        kSession.insert(new Patient().setId("Patient/1"));
         
         Assert.assertEquals(1, kSession.fireAllRules());
         System.out.println(" ---- Finished testPatientRulesWithJustAPatient() Test ---");
@@ -67,7 +67,7 @@ public class SimpleConditionsRulesJUnitTest {
         System.out.println(" ---- Starting testPatientRulesWithAnPatientFrom82() Test ---");
         kSession.insert(new Patient()
             .setBirthDateWithDayPrecision(parseDate("1982-01-01"))
-            .setId("1")
+            .setId("Patient/1")
         );
 
         Assert.assertEquals(2, kSession.fireAllRules());
@@ -82,7 +82,7 @@ public class SimpleConditionsRulesJUnitTest {
             .setBirthDateWithDayPrecision(parseDate("1982-01-01"))
             .setGender(AdministrativeGenderEnum.MALE)
             .addAddress(new AddressDt().setCity("London"))
-            .setId("1")
+            .setId("Patient/1")
         );
 
         Assert.assertEquals(4, kSession.fireAllRules());
@@ -99,7 +99,7 @@ public class SimpleConditionsRulesJUnitTest {
             .setBirthDateWithDayPrecision(parseDate("1982-01-01"))
             .setGender(AdministrativeGenderEnum.MALE)
             .addAddress(new AddressDt().setCity("London"))
-            .setId("1")
+            .setId("Patient/1")
         );
 
         Assert.assertEquals(5, kSession.fireAllRules());

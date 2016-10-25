@@ -5,13 +5,16 @@
  */
 package org.drools.workshop.clinical.features;
 
+import ca.uhn.fhir.model.dstu2.composite.CodeableConceptDt;
+import ca.uhn.fhir.model.dstu2.resource.Location;
+import ca.uhn.fhir.model.dstu2.resource.Observation;
+import ca.uhn.fhir.model.dstu2.resource.Patient;
+import ca.uhn.fhir.model.primitive.IntegerDt;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.inject.Inject;
-import org.drools.workshop.misc.model.Person;
-import org.drools.workshop.misc.model.Person.Gender;
-import org.drools.workshop.misc.model.Room;
+import org.drools.workshop.clinical.model.FixedCapacityLocation;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -39,7 +42,7 @@ public class AccumulationRulesJUnitTest {
     public static JavaArchive createDeployment() {
 
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
-                .addPackages(true, "org.drools.workshop.model")
+                .addPackages(true, "org.drools.workshop.clinical.model")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         //System.out.println(jar.toString(true));
         return jar;
@@ -52,28 +55,64 @@ public class AccumulationRulesJUnitTest {
     private final Random random = new Random(10);
     
     @Test
-    public void test20PersonsInARoom() {
+    public void test20PatientsInALocation() {
         Assert.assertNotNull(kBase);
         KieSession kSession = kBase.newKieSession();
-        System.out.println(" ---- Starting test20PersonsInARoom() Test ---");
-        Room room = new Room("living room", 10);
-        List<Person> persons = generatePersons(20);
-        for(Person p : persons){
+        System.out.println(" ---- Starting test20PatientsInALocation() Test ---");
+        
+        Location location = (Location) new FixedCapacityLocation()
+            .setCapacity(15)
+            .setId("Location/1");
+        
+        List<Patient> patients = generatePatients(20);
+        for(Patient p : patients){
             kSession.insert(p);
         }
-//        room.setPersons(persons);
-        kSession.insert(room);
+        kSession.insert(location);
 
-        Assert.assertEquals(2, kSession.fireAllRules());
-        System.out.println(" ---- Finished test20PersonsInARoom() Test ---");
+        Assert.assertEquals(1, kSession.fireAllRules());
+        
+        System.out.println(" ---- Finished test20PatientsInALocation() Test ---");
+        kSession.dispose();
+    }
+    
+    @Test
+    public void testPatientWithBloodPressureObservations() {
+        Assert.assertNotNull(kBase);
+        KieSession kSession = kBase.newKieSession();
+        System.out.println(" ---- Starting testPatientWithBloodPressureObservations() Test ---");
+        
+        
+        kSession.insert(generatePatients(1).get(0));
+        
+        List<Observation> observations = generateBloodPressureObservations(60);
+        for (Observation observation : observations) {
+            kSession.insert(observation);
+        }
+
+        Assert.assertEquals(1, kSession.fireAllRules());
+        
+        System.out.println(" ---- Finished testPatientWithBloodPressureObservations() Test ---");
         kSession.dispose();
     }
    
     
-    private List<Person> generatePersons(int amount) {
-        List<Person> results = new ArrayList<Person>();
+    private List<Patient> generatePatients(int amount) {
+        List<Patient> results = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
-            results.add(new Person("name " + i, random.nextInt(100), "name" + i + "@mail.com", "Somewhere", ((i % 2) == 1) ? Gender.FEMALE : Gender.MALE));
+            results.add((Patient) new Patient()
+                .setId("Patient/"+(i+1)));
+        }
+        return results;
+    }
+    
+    private List<Observation> generateBloodPressureObservations(int amount) {
+        List<Observation> results = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            results.add((Observation) new Observation()
+                .setCode(new CodeableConceptDt("http://loinc.org", "55284-4")) //Diastolic
+                .setValue(new IntegerDt(random.nextInt(40)+60))
+                .setId("Observation/"+(i+1)));
         }
         return results;
     }

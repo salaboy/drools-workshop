@@ -1,26 +1,43 @@
 package org.drools.workshop.clinical;
 
-import org.drools.workshop.misc.model.*;
+import ca.uhn.fhir.model.dstu2.resource.Condition;
+import ca.uhn.fhir.model.dstu2.resource.Patient;
+import ca.uhn.fhir.model.dstu2.valueset.AdministrativeGenderEnum;
+import ca.uhn.fhir.model.dstu2.valueset.ConditionClinicalStatusCodesEnum;
+import ca.uhn.fhir.model.dstu2.valueset.ConditionVerificationStatusEnum;
+
+import org.drools.workshop.clinical.model.AsthmaticPatient;
 
 
-declare BusPass
-    person: Person @key 
-    discount: double
+declare SevereAsthmaticPatient
+    reference : Patient
 end
 
-rule "A Person enrolled in a University gets a Bus Pass"
+rule "Identify Asthmatic Patients"
     when
-        $p: Person()
-        $u: University(enrolled contains $p)
+        $p: Patient()
+        exists (
+            Condition(
+                patient.resource == $p,
+                code.codingFirstRep.system == "http://snomed.info/sct",                 //SNOMED-CT
+                code.codingFirstRep.code == "195967001",                                //Asthma (disorder)
+                clinicalStatus == ConditionClinicalStatusCodesEnum.ACTIVE.code,
+                verificationStatus == ConditionVerificationStatusEnum.CONFIRMED.code,
+                severity.codingFirstRep.system == "http://snomed.info/sct",             //SNOMED-CT
+                severity.codingFirstRep.code == "24484000"                              //Severe
+            )
+        )
     then
-        insert(new BusPass($p));
+        insert(new SevereAsthmaticPatient($p));
 end
 
-rule "Bus Passes for Young People get 10% discount"
+rule "Female Severe Asthmatic Patient, let me know"
     when
-        $bp: BusPass(person.(age >= 18, age <= 30))
+        $ap: SevereAsthmaticPatient(
+            reference.gender == AdministrativeGenderEnum.FEMALE.code
+        )
     then
-        $bp.setDiscount(0.1);
+        System.out.println("Female Severe Asthmatic Patient found: "+$ap.getReference());
 end
 
 

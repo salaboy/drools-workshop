@@ -5,9 +5,9 @@
  */
 package org.drools.workshop.clinical.features;
 
+import ca.uhn.fhir.model.dstu2.composite.AddressDt;
+import ca.uhn.fhir.model.dstu2.resource.Patient;
 import javax.inject.Inject;
-import org.drools.workshop.misc.model.Person;
-import org.drools.workshop.misc.model.Person.Gender;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -40,7 +40,7 @@ public class TMSRulesJUnitTest {
     public static JavaArchive createDeployment() {
 
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
-                .addPackages(true, "org.drools.workshop.model")
+                .addPackages(true, "org.drools.workshop.clinical.model")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         //System.out.println(jar.toString(true));
         return jar;
@@ -55,6 +55,7 @@ public class TMSRulesJUnitTest {
         Assert.assertNotNull(kBase);
         KieSession kSession = kBase.newKieSession();
         System.out.println(" ---- Starting testSimpleTMS() Test ---");
+        
         kSession.addEventListener(new RuleRuntimeEventListener() {
 
             public void objectInserted(ObjectInsertedEvent event) {
@@ -69,12 +70,17 @@ public class TMSRulesJUnitTest {
                 System.out.println(" >>> Fact Deleted" + event );
             }
         });
-        Person p = new Person("salaboy", 32, "salaboy@mail.com", "London", Gender.MALE);
-        FactHandle personFH = kSession.insert(p);
-
+        
+        
+        Patient patient = (Patient) new Patient()
+            .addAddress(new AddressDt().setCity("London"))
+            .setId("Patient/1");
+        
+        FactHandle patientFH = kSession.insert(patient);
         kSession.fireAllRules();
-        p.setCity("Paris");
-        kSession.update(personFH, p);
+        
+        patient.getAddressFirstRep().setCity("Buenos Aires");
+        kSession.update(patientFH, patient);
         kSession.fireAllRules();
 
         System.out.println(" ---- Finished testSimpleTMS() Test ---");

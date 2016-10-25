@@ -1,24 +1,47 @@
 package org.drools.workshop.clinical;
 
-import org.drools.workshop.misc.model.*;
-import org.drools.workshop.misc.model.Person.*;
+import ca.uhn.fhir.model.dstu2.resource.Condition;
+import ca.uhn.fhir.model.dstu2.resource.Patient;
+import ca.uhn.fhir.model.dstu2.valueset.AdministrativeGenderEnum;
+import ca.uhn.fhir.model.dstu2.valueset.ConditionClinicalStatusCodesEnum;
+import ca.uhn.fhir.model.dstu2.valueset.ConditionVerificationStatusEnum;
+
+import org.drools.workshop.clinical.model.AsthmaticPatient;
+import org.drools.workshop.misc.services.MyService;
+
 import java.util.List;
-import org.drools.workshop.misc.services.*;
 
 global List rulesFired;
 global MyService myService;
 
-rule "room and a person"
+rule "Identify Diabetic Patients"
     when
-        $r: Room()
-        $p: Person()
+        $p: Patient()
+        exists (
+            Condition(
+                patient.resource == $p,
+                code.codingFirstRep.system == "http://snomed.info/sct",                 //SNOMED-CT
+                code.codingFirstRep.code == "73211009",                                 //Diabetes mellitus (disorder)
+                clinicalStatus == ConditionClinicalStatusCodesEnum.ACTIVE.code,
+                verificationStatus == ConditionVerificationStatusEnum.CONFIRMED.code
+            )
+        )
     then
         rulesFired.add(drools.getRule().getName());
 end
 
-rule "overcrowded room"
+rule "Identify Asthmatic Patients"
     when
-        $r: Room(persons!.size > capacity)
+        $p: Patient()
+        exists (
+            Condition(
+                patient.resource == $p,
+                code.codingFirstRep.system == "http://snomed.info/sct",                 //SNOMED-CT
+                code.codingFirstRep.code == "195967001",                                //Asthma (disorder)
+                clinicalStatus == ConditionClinicalStatusCodesEnum.ACTIVE.code,
+                verificationStatus == ConditionVerificationStatusEnum.CONFIRMED.code
+            )
+        )
     then
         myService.notify(drools.getRule().getName());
 end
