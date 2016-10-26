@@ -5,6 +5,9 @@
  */
 package org.drools.workshop.clinical.pitfalls;
 
+import ca.uhn.fhir.model.dstu2.composite.ResourceReferenceDt;
+import ca.uhn.fhir.model.dstu2.resource.Observation;
+import ca.uhn.fhir.model.dstu2.resource.Patient;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -37,7 +40,7 @@ public class CrossProductRulesJUnitTest {
     public static JavaArchive createDeployment() {
 
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
-                .addPackages(true, "org.drools.workshop.model")
+                .addPackages(true, "org.drools.workshop.clinical.model")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         //System.out.println(jar.toString(true));
         return jar;
@@ -52,125 +55,121 @@ public class CrossProductRulesJUnitTest {
     private KieBase kBaseCrossProductSolution;
 
     @Test
-    public void testHouseWith3Rooms() {
+    public void testPatientWith3Observations() {
         Assert.assertNotNull(kBaseCrossProduct);
         KieSession kSession = kBaseCrossProduct.newKieSession();
-        System.out.println(" ---- Starting testHouseWith3Rooms() Test ---");
+        System.out.println(" ---- Starting testPatientWith3Observations() Test ---");
 
-        Room livingRoom = new Room("living room", 10);
-        kSession.insert(livingRoom);
+        Patient patient = (Patient) new Patient().setId("Patient/1");
+        
+        Observation observation1 = (Observation) new Observation().setId("Observation/1");
+        observation1.setSubject(new ResourceReferenceDt(patient));
+        
+        Observation observation2 = (Observation) new Observation().setId("Observation/2");
+        observation2.setSubject(new ResourceReferenceDt(patient));
+        
+        Observation observation3 = (Observation) new Observation().setId("Observation/3");
+        observation3.setSubject(new ResourceReferenceDt(patient));
 
-        Room kitchenRoom = new Room("kitchen", 5);
-        kSession.insert(kitchenRoom);
-
-        Room bedRoom = new Room("bedroom", 4);
-        kSession.insert(bedRoom);
-
-        House house = new House();
-        List<Room> rooms = new ArrayList<Room>();
-        rooms.add(livingRoom);
-        rooms.add(bedRoom);
-        rooms.add(kitchenRoom);
-        house.setRooms(rooms);
-
-        kSession.insert(house);
+        kSession.insert(patient);
+        kSession.insert(observation1);
+        kSession.insert(observation2);
+        kSession.insert(observation3);
 
         Assert.assertEquals(3, kSession.fireAllRules());
-        System.out.println(" ---- Finished testHouseWith3Rooms() Test ---");
+        System.out.println(" ---- Finished testPatientWith3Observations() Test ---");
         kSession.dispose();
     }
 
     @Test
-    public void test2HousesWith3Rooms() {
+    public void test2PatientsWith3Observations() {
         Assert.assertNotNull(kBaseCrossProduct);
         KieSession kSession = kBaseCrossProduct.newKieSession();
-        System.out.println(" ---- Starting test2HousesWith3Rooms() Test ---");
+        System.out.println(" ---- Starting test2PatientsWith3Observations() Test ---");
 
-        Room livingRoomA = new Room("living room", 10);
-        kSession.insert(livingRoomA);
+        //1 Patient with 3 Observations
+        Patient patient1 = (Patient) new Patient().setId("Patient/1");
+        
+        Observation observation1 = (Observation) new Observation().setId("Observation/1");
+        observation1.setSubject(new ResourceReferenceDt(patient1));
+        
+        Observation observation2 = (Observation) new Observation().setId("Observation/2");
+        observation2.setSubject(new ResourceReferenceDt(patient1));
+        
+        Observation observation3 = (Observation) new Observation().setId("Observation/3");
+        observation3.setSubject(new ResourceReferenceDt(patient1));
 
-        Room kitchenRoomA = new Room("kitchen", 5);
-        kSession.insert(kitchenRoomA);
+        kSession.insert(patient1);
+        kSession.insert(observation1);
+        kSession.insert(observation2);
+        kSession.insert(observation3);
+        
 
-        Room bedRoomA = new Room("bedroom", 4);
-        kSession.insert(bedRoomA);
+        //Another Patient with 3 Observations
+        Patient patient2 = (Patient) new Patient().setId("Patient/2");
+        
+        Observation observation4 = (Observation) new Observation().setId("Observation/4");
+        observation4.setSubject(new ResourceReferenceDt(patient2));
+        
+        Observation observation5 = (Observation) new Observation().setId("Observation/5");
+        observation5.setSubject(new ResourceReferenceDt(patient2));
+        
+        Observation observation6 = (Observation) new Observation().setId("Observation/6");
+        observation6.setSubject(new ResourceReferenceDt(patient2));
 
-        House houseA = new House();
-        List<Room> rooms = new ArrayList<Room>();
-        rooms.add(livingRoomA);
-        rooms.add(bedRoomA);
-        rooms.add(kitchenRoomA);
-        houseA.setRooms(rooms);
-
-        kSession.insert(houseA);
-
-        Room livingRoomB = new Room("living room", 10);
-        kSession.insert(livingRoomB);
-
-        Room kitchenRoomB = new Room("kitchen", 5);
-        kSession.insert(kitchenRoomB);
-
-        Room bedRoomB = new Room("bedroom", 4);
-        kSession.insert(bedRoomB);
-
-        House houseB = new House();
-        List<Room> roomsB = new ArrayList<Room>();
-        roomsB.add(livingRoomB);
-        roomsB.add(bedRoomB);
-        roomsB.add(kitchenRoomB);
-        houseB.setRooms(roomsB);
-
-        kSession.insert(houseB);
-
+        kSession.insert(patient2);
+        kSession.insert(observation4);
+        kSession.insert(observation5);
+        kSession.insert(observation6);
+        
         Assert.assertEquals(12, kSession.fireAllRules());
-        System.out.println(" ---- Finished test2HousesWith3Rooms() Test ---");
+        System.out.println(" ---- Finished test2PatientsWith3Observations() Test ---");
         kSession.dispose();
     }
 
     @Test
-    public void test2HousesWith3RoomsChecked() {
+    public void test2PatientsWith3ObservationsChecked() {
         Assert.assertNotNull(kBaseCrossProductSolution);
         KieSession kSession = kBaseCrossProductSolution.newKieSession();
-        System.out.println(" ---- Starting test2HousesWith3RoomsChecked() Test ---");
+        System.out.println(" ---- Starting test2PatientsWith3ObservationsChecked() Test ---");
 
-        Room livingRoomA = new Room("living room", 10);
-        kSession.insert(livingRoomA);
+        //1 Patient with 3 Observations
+        Patient patient1 = (Patient) new Patient().setId("Patient/1");
+        
+        Observation observation1 = (Observation) new Observation().setId("Observation/1");
+        observation1.setSubject(new ResourceReferenceDt(patient1));
+        
+        Observation observation2 = (Observation) new Observation().setId("Observation/2");
+        observation2.setSubject(new ResourceReferenceDt(patient1));
+        
+        Observation observation3 = (Observation) new Observation().setId("Observation/3");
+        observation3.setSubject(new ResourceReferenceDt(patient1));
 
-        Room kitchenRoomA = new Room("kitchen", 5);
-        kSession.insert(kitchenRoomA);
+        kSession.insert(patient1);
+        kSession.insert(observation1);
+        kSession.insert(observation2);
+        kSession.insert(observation3);
+        
 
-        Room bedRoomA = new Room("bedroom", 4);
-        kSession.insert(bedRoomA);
+        //Another Patient with 3 Observations
+        Patient patient2 = (Patient) new Patient().setId("Patient/2");
+        
+        Observation observation4 = (Observation) new Observation().setId("Observation/4");
+        observation4.setSubject(new ResourceReferenceDt(patient2));
+        
+        Observation observation5 = (Observation) new Observation().setId("Observation/5");
+        observation5.setSubject(new ResourceReferenceDt(patient2));
+        
+        Observation observation6 = (Observation) new Observation().setId("Observation/6");
+        observation6.setSubject(new ResourceReferenceDt(patient2));
 
-        House houseA = new House();
-        List<Room> rooms = new ArrayList<Room>();
-        rooms.add(livingRoomA);
-        rooms.add(bedRoomA);
-        rooms.add(kitchenRoomA);
-        houseA.setRooms(rooms);
-
-        kSession.insert(houseA);
-
-        Room livingRoomB = new Room("living room", 10);
-        kSession.insert(livingRoomB);
-
-        Room kitchenRoomB = new Room("kitchen", 5);
-        kSession.insert(kitchenRoomB);
-
-        Room bedRoomB = new Room("bedroom", 4);
-        kSession.insert(bedRoomB);
-
-        House houseB = new House();
-        List<Room> roomsB = new ArrayList<Room>();
-        roomsB.add(livingRoomB);
-        roomsB.add(bedRoomB);
-        roomsB.add(kitchenRoomB);
-        houseB.setRooms(roomsB);
-
-        kSession.insert(houseB);
+        kSession.insert(patient2);
+        kSession.insert(observation4);
+        kSession.insert(observation5);
+        kSession.insert(observation6);
 
         Assert.assertEquals(6, kSession.fireAllRules());
-        System.out.println(" ---- Finished test2HousesWith3RoomsChecked() Test ---");
+        System.out.println(" ---- Finished test2PatientsWith3ObservationsChecked() Test ---");
         kSession.dispose();
     }
    

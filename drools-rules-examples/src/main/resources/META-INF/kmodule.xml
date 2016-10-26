@@ -1,4 +1,9 @@
 <kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+<!--    <configuration>
+        <property key="drools.dump.dir" value="/tmp"/>
+    </configuration>-->
+    
     <!-- Misc -->
     <kbase name="misc-simpleConditionsKBase" packages="misc.features.simple.conditions">
         <ksession name="misc-simpleConditionsKSession"/>

@@ -5,13 +5,13 @@
  */
 package org.drools.workshop.clinical.pitfalls;
 
+import ca.uhn.fhir.model.dstu2.composite.HumanNameDt;
+import ca.uhn.fhir.model.dstu2.resource.Observation;
+import ca.uhn.fhir.model.dstu2.resource.Patient;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
-import org.drools.workshop.misc.model.Person;
-import org.drools.workshop.misc.model.Person.Gender;
-import org.drools.workshop.misc.model.University;
-import org.drools.workshop.misc.services.MyDataProviderServiceImpl;
+import org.drools.workshop.clinical.services.MyConditionsProviderServiceImpl;
 import org.drools.workshop.misc.services.SlowMyServiceImpl;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -41,7 +41,7 @@ public class WrongServiceRulesJUnitTest {
     public static JavaArchive createDeployment() {
 
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
-                .addPackages(true, "org.drools.workshop.model")
+                .addPackages(true, "org.drools.workshop.clinical.model")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         //System.out.println(jar.toString(true));
         return jar;
@@ -59,9 +59,9 @@ public class WrongServiceRulesJUnitTest {
         kSession.setGlobal("myService", new SlowMyServiceImpl());
         System.out.println(" ---- Starting testSlowServiceInAGlobal() Test ---");
 
-        List<Person> persons = generatePersons(20);
-        for (Person p : persons) {
-            kSession.insert(p);
+        List<Observation> observations = generateObservations(20);
+        for (Observation o : observations) {
+            kSession.insert(o);
         }
 
         Assert.assertEquals(20, kSession.fireAllRules());
@@ -74,25 +74,27 @@ public class WrongServiceRulesJUnitTest {
         Assert.assertNotNull(kBase);
         KieSession kSession = kBase.newKieSession();
 
-        kSession.setGlobal("myDataProviderService", new MyDataProviderServiceImpl());
+        kSession.setGlobal("myConditionsProviderService", new MyConditionsProviderServiceImpl());
         System.out.println(" ---- Starting testServiceCallInRHS() Test ---");
 
-        University university = new University("My Uni");
-        FactHandle univFactHandle = kSession.insert(university);
+        Patient patient = (Patient) new Patient().setId("Patient/1");
+        FactHandle patientHandle = kSession.insert(patient);
 
         Assert.assertEquals(50, kSession.fireAllRules());
-        university.setName("My Uni (updated)");
-        kSession.update(univFactHandle, university);
+        
+        //A modification of the patient will execute the service 
+        patient.addName(new HumanNameDt().addFamily("Richards"));
+        kSession.update(patientHandle, patient);
         Assert.assertEquals(50, kSession.fireAllRules());
         
         System.out.println(" ---- Finished testServiceCallInRHS() Test ---");
         kSession.dispose();
     }
 
-    private List<Person> generatePersons(int amount) {
-        List<Person> results = new ArrayList<Person>();
+    private List<Observation> generateObservations(int amount) {
+        List<Observation> results = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
-            results.add(new Person("name " + i, (int) Math.round(Math.random()) % 100, "name" + i + "@mail.com", "Somewhere", ((i % 2) == 1) ? Gender.FEMALE : Gender.MALE));
+            results.add((Observation) new Observation().setId("Observation/"+(i+1)));
         }
         return results;
     }

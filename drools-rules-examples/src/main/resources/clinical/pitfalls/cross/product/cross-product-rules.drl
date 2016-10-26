@@ -1,15 +1,14 @@
 package org.drools.workshop.clinical;
 
-import org.drools.workshop.misc.model.*;
-import org.drools.workshop.misc.model.Person.*;
-import java.util.List;
+import ca.uhn.fhir.model.dstu2.resource.Patient;
+import ca.uhn.fhir.model.dstu2.resource.Observation;
 
 
-rule "Room and House"
+rule "observation and patient"
     when
-        $r: Room()
-        $h: House()
+        $p: Patient()
+        $o: Observation()
     then
-        System.out.println("There is a Room: "+ $r);
-        System.out.println("And There is a House: "+ $h);
+        System.out.println("There is a Patient: "+ $p);
+        System.out.println("And there is an Observation: "+ $o);
 end

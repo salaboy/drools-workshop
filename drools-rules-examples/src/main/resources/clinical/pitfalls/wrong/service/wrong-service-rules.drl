@@ -1,17 +1,19 @@
 package org.drools.workshop.clinical;
 
-import org.drools.workshop.misc.model.*;
-import org.drools.workshop.misc.model.Person.*;
-import java.util.List;
-import org.drools.workshop.misc.services.*;
+import ca.uhn.fhir.model.dstu2.resource.Condition;
+import ca.uhn.fhir.model.dstu2.resource.Observation;
+import ca.uhn.fhir.model.dstu2.resource.Patient;
+
+import org.drools.workshop.misc.services.MyService;
+import org.drools.workshop.clinical.services.MyConditionsProviderService;
 
 global MyService myService;
-global MyDataProviderService myDataProviderService;
+global MyConditionsProviderService myConditionsProviderService;
 
 
 rule "Simple But Slow Rule"
     when
-        $p: Person()
+        $o: Observation()
     then
         myService.notify(drools.getRule().getName());
 end
@@ -19,8 +21,8 @@ end
 
 rule "Using from to access external Service"
     when
-        $u: University()
-        $p: Person() from myDataProviderService.getPersons()
+        $p: Patient()
+        $c: Condition() from myConditionsProviderService.getConditions()
     then
-        System.out.println("Loaded Person: "+ $p); 
+        System.out.println("Loaded Condition: "+ $c); 
 end

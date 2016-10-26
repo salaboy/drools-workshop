@@ -5,8 +5,12 @@
  */
 package org.drools.workshop.clinical.pitfalls;
 
+import ca.uhn.fhir.model.dstu2.composite.CodeableConceptDt;
+import ca.uhn.fhir.model.dstu2.resource.Observation;
+import ca.uhn.fhir.model.dstu2.resource.Patient;
+import ca.uhn.fhir.model.dstu2.resource.RiskAssessment;
+import ca.uhn.fhir.model.primitive.IntegerDt;
 import javax.inject.Inject;
-import org.drools.workshop.misc.model.Person;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -33,7 +37,7 @@ public class InfiniteLoopJUnitTest {
     public static JavaArchive createDeployment() {
 
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
-                .addPackages(true, "org.drools.workshop.model")
+                .addPackages(true, "org.drools.workshop.clinical.model")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         //System.out.println(jar.toString(true));
         return jar;
@@ -48,12 +52,29 @@ public class InfiniteLoopJUnitTest {
         Assert.assertNotNull(kSession);
         System.out.println(" ---- Starting testUpdateLoop() Test ---");
 
-        kSession.insert(new Person("salaboy", 32, "salaboy@mail.com", "London", Person.Gender.MALE));
+        Patient patient = (Patient) new Patient().setId("Patient/1");
+        
+        RiskAssessment riskAssessment = (RiskAssessment) new RiskAssessment().setId("RiskAssessment/1");
+        
+        Observation smokerObservation = (Observation) new Observation()
+            .setCode(new CodeableConceptDt("http://snomed.info/sct", "428041000124106"))
+            .setId("Observation/1");
+        
+        Observation bodyMassIndexObservation = (Observation) new Observation()
+            .setCode(new CodeableConceptDt("http://snomed.info/sct", "60621009"))
+            .setValue(new IntegerDt(45))
+            .setId("Observation/2");
 
+        kSession.insert(patient);
+        kSession.insert(riskAssessment);
+        kSession.insert(smokerObservation);
+        kSession.insert(bodyMassIndexObservation);
+        
         Assert.assertEquals(15, kSession.fireAllRules(15));
         System.out.println(" ---- Finished testUpdateLoop() Test ---");
+        
     }
 
-
+    
 
 }
