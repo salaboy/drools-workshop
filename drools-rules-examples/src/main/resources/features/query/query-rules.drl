@@ -1,8 +1,0 @@
-package org.drools.workshop;
-
-import org.drools.workshop.model.*;
-import org.drools.workshop.model.Person.*;
-
-query "all persons older than" (int $ageThreshold)
-        $p: Person( age >= $ageThreshold)
-end

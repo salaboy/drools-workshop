@@ -1,0 +1,17 @@
+package org.drools.workshop.clinical;
+
+import ca.uhn.fhir.model.dstu2.resource.Patient;
+
+declare Tracker
+    patient: Patient
+end
+
+
+rule "Track all Patients from London"
+    when
+        $p: Patient(
+            addressFirstRep.city == "London" 
+        )
+    then
+        insertLogical(new Tracker($p));
+end

@@ -1,0 +1,35 @@
+package org.drools.workshop.clinical;
+
+import ca.uhn.fhir.model.dstu2.resource.Patient;
+import ca.uhn.fhir.model.dstu2.resource.Observation;
+
+import ca.uhn.fhir.model.primitive.IntegerDt;
+
+import org.drools.workshop.clinical.model.FixedCapacityLocation;
+
+import java.util.List;
+
+
+rule "overcrowded location"
+    when
+        $l: FixedCapacityLocation()
+        List($amount: size > $l.capacity) from collect (Patient())
+    then
+        System.out.println(">>> The location is over crowded by "+ ($amount - $l.getCapacity())  +" patients");
+end
+
+
+rule "calculate blood pressure"
+    when  
+        Patient()
+        $avg: Double(doubleValue > 80) from accumulate (
+            Observation(
+                code.codingFirstRep.system == "http://loinc.org",
+                code.codingFirstRep.code == "55284-4",               //Diastolic
+                $value: value#IntegerDt.value
+            ), 
+            average($value)
+        )
+    then
+        System.out.println(">>> The average Blood Pressure is "+ $avg);
+end

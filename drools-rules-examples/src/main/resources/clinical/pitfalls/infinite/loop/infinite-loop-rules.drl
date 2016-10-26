@@ -1,0 +1,48 @@
+package org.drools.workshop.clinical;
+
+import ca.uhn.fhir.model.dstu2.composite.CodeableConceptDt;
+import ca.uhn.fhir.model.dstu2.composite.ResourceReferenceDt;
+import ca.uhn.fhir.model.dstu2.resource.Condition;
+import ca.uhn.fhir.model.dstu2.resource.Observation;
+import ca.uhn.fhir.model.dstu2.resource.Patient;
+import ca.uhn.fhir.model.dstu2.resource.RiskAssessment;
+import ca.uhn.fhir.model.dstu2.valueset.ConditionClinicalStatusCodesEnum;
+import ca.uhn.fhir.model.dstu2.valueset.ConditionVerificationStatusEnum;
+
+import ca.uhn.fhir.model.primitive.IntegerDt;
+
+rule "Morbid Obese and Smoker Patients have moderate Asthma Risk"
+    when
+        $pa: Patient()
+        $ra: RiskAssessment()
+        $sm: Observation(                                               //Smoker
+            code.codingFirstRep.system == "http://snomed.info/sct",
+            code.codingFirstRep.code == "428041000124106"               //Current some day smoker
+        )
+        $ow: Observation(                                               //Overweight
+            code.codingFirstRep.system == "http://snomed.info/sct",
+            code.codingFirstRep.code == "60621009",                     //Body mass index
+            value#IntegerDt.value > 40
+        )
+    then
+    
+        System.out.println("Adding a 'moderate' risk assessment for asthma");
+
+        Condition asthmaCondition = createAsthmaCondition($pa);
+        
+        modify ($ra) {
+            setCondition(new ResourceReferenceDt(asthmaCondition)),
+            addPrediction().setProbability(new CodeableConceptDt("http://hl7.org/fhir/risk-probability", "moderate"))
+        };
+end
+
+function Condition createAsthmaCondition(Patient patient){
+    return (Condition) new Condition()
+            .setCode(new CodeableConceptDt("http://snomed.info/sct", "195967001"))   //Asthma
+            .setClinicalStatus(ConditionClinicalStatusCodesEnum.ACTIVE)
+            .setVerificationStatus(ConditionVerificationStatusEnum.PROVISIONAL)
+            .setSeverity(new CodeableConceptDt("http://snomed.info/sct", "6736007")) //Moderate
+            .setPatient(new ResourceReferenceDt(patient))
+            .setId("Condition/1");
+}
+

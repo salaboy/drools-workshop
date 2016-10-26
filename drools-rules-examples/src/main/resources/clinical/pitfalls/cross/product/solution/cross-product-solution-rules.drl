@@ -1,0 +1,14 @@
+package org.drools.workshop.clinical;
+
+import ca.uhn.fhir.model.dstu2.resource.Patient;
+import ca.uhn.fhir.model.dstu2.resource.Observation;
+
+
+rule "observation and patient"
+    when
+        $p: Patient()
+        $o: Observation(subject.resource == $p )
+    then
+        System.out.println("There is a Patient: "+ $p);
+        System.out.println("And there is an Observation belonging to this Patient: "+ $o);
+end

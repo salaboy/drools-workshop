@@ -12,10 +12,13 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kie.version>6.3.0.Final</kie.version>
+        <kie.version>6.5.0.Final</kie.version>
         <junit.version>4.11</junit.version>
         <cdi.version>1.2</cdi.version>
         <weld.version>2.3.0.Final</weld.version>
+        <hapi.fhir.version>2.0</hapi.fhir.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -55,6 +58,30 @@
             <artifactId>weld-se-core</artifactId>
             <version>${weld.version}</version>
         </dependency>
+        
+        <!-- HAPI FHIR -->
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>hapi-fhir-base</artifactId>
+            <version>${hapi.fhir.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>hapi-fhir-structures-dstu2</artifactId>
+            <version>${hapi.fhir.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>hapi-fhir-structures-hl7org-dstu2</artifactId>
+            <version>${hapi.fhir.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>hapi-fhir-validation-resources-dstu2</artifactId>
+            <version>${hapi.fhir.version}</version>
+        </dependency>
+
+        
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

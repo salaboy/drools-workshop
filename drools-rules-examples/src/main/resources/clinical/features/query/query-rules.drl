@@ -1,0 +1,12 @@
+package org.drools.workshop.clinical;
+
+import ca.uhn.fhir.model.dstu2.resource.Condition;
+import ca.uhn.fhir.model.dstu2.resource.Patient;
+
+query "all conditions for Patient"(Patient $patient, String $conditionCodeSysytem, String $conditionCode)
+    $c: Condition(
+        patient.resource == $patient,
+        $conditionCodeSysytem := code.codingFirstRep.system,
+        $conditionCode := code.codingFirstRep.code
+    )
+end

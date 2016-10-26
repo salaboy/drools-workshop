@@ -1,0 +1,43 @@
+package org.drools.workshop.clinical;
+
+import ca.uhn.fhir.model.dstu2.resource.Condition;
+import ca.uhn.fhir.model.dstu2.resource.Patient;
+import ca.uhn.fhir.model.dstu2.valueset.AdministrativeGenderEnum;
+import ca.uhn.fhir.model.dstu2.valueset.ConditionClinicalStatusCodesEnum;
+import ca.uhn.fhir.model.dstu2.valueset.ConditionVerificationStatusEnum;
+
+import org.drools.workshop.clinical.model.AsthmaticPatient;
+
+
+declare SevereAsthmaticPatient
+    reference : Patient
+end
+
+rule "Identify Asthmatic Patients"
+    when
+        $p: Patient()
+        exists (
+            Condition(
+                patient.resource == $p,
+                code.codingFirstRep.system == "http://snomed.info/sct",                 //SNOMED-CT
+                code.codingFirstRep.code == "195967001",                                //Asthma (disorder)
+                clinicalStatus == ConditionClinicalStatusCodesEnum.ACTIVE.code,
+                verificationStatus == ConditionVerificationStatusEnum.CONFIRMED.code,
+                severity.codingFirstRep.system == "http://snomed.info/sct",             //SNOMED-CT
+                severity.codingFirstRep.code == "24484000"                              //Severe
+            )
+        )
+    then
+        insert(new SevereAsthmaticPatient($p));
+end
+
+rule "Female Severe Asthmatic Patient, let me know"
+    when
+        $ap: SevereAsthmaticPatient(
+            reference.gender == AdministrativeGenderEnum.FEMALE.code
+        )
+    then
+        System.out.println("Female Severe Asthmatic Patient found: "+$ap.getReference());
+end
+
+

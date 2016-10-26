@@ -1,0 +1,63 @@
+package org.drools.workshop.clinical;
+
+import ca.uhn.fhir.model.dstu2.resource.Patient;
+import ca.uhn.fhir.model.dstu2.valueset.AdministrativeGenderEnum;
+
+import org.drools.workshop.clinical.model.AsthmaticPatient;
+
+rule "There is a patient, let me know"
+    when
+        $p: Patient()
+    then
+        System.out.println(" >>> there is a new Patient: "+$p.toString());
+end
+
+rule "There is a patient born before 1983, let me know"
+    when
+        $p: Patient( birthDateElement.getYear < 1983 )
+    then
+        System.out.println(" >>> there is a new Patient born before 1983: "+$p.toString());
+end
+
+rule "There is a patient born before 1983 from London, let me know"
+    when
+        $p: Patient( 
+            birthDateElement.year < 1983, 
+            addressFirstRep.city == "London" 
+        )
+    then
+        System.out.println(" >>> there is a new Patient from London born before 1983: "+$p.toString());
+end
+
+rule "There is a Male patient born before 1983 from London, let me know"
+    when
+        $p: Patient(
+            birthDateElement.year < 1983, 
+            addressFirstRep.city == "London", 
+            gender == AdministrativeGenderEnum.MALE.code
+        )
+    then
+        System.out.println(" >>> there is a new Male Patient from London born before 1983: "+$p.toString());
+end
+
+rule "There is a Female patient born before 1983 from London, let me know"
+    when
+        $p: Patient(
+            birthDateElement.year < 1983, 
+            addressFirstRep.city == "London", 
+            gender == AdministrativeGenderEnum.FEMALE.code
+        )
+    then
+        System.out.println(" >>> there is a new Female Patient from London born before 1983: "+$p.toString());
+end
+
+
+rule "There is an Asthmatic patient from London diagnosed before 2015, let me know"
+    when
+        $p: AsthmaticPatient( 
+            addressFirstRep.city == "London", 
+            diagnosedDate.year < 2015
+        )
+    then
+        System.out.println(" >>> there is a new Asthmatic patient from London diagnosed before 2015: "+$p.toString());
+end

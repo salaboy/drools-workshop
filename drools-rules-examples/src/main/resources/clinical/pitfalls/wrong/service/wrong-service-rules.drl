@@ -1,0 +1,28 @@
+package org.drools.workshop.clinical;
+
+import ca.uhn.fhir.model.dstu2.resource.Condition;
+import ca.uhn.fhir.model.dstu2.resource.Observation;
+import ca.uhn.fhir.model.dstu2.resource.Patient;
+
+import org.drools.workshop.misc.services.MyService;
+import org.drools.workshop.clinical.services.MyConditionsProviderService;
+
+global MyService myService;
+global MyConditionsProviderService myConditionsProviderService;
+
+
+rule "Simple But Slow Rule"
+    when
+        $o: Observation()
+    then
+        myService.notify(drools.getRule().getName());
+end
+
+
+rule "Using from to access external Service"
+    when
+        $p: Patient()
+        $c: Condition() from myConditionsProviderService.getConditions()
+    then
+        System.out.println("Loaded Condition: "+ $c); 
+end
