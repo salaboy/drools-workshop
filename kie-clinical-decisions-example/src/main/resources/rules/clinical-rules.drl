@@ -1,0 +1,31 @@
+package org.drools.demo;
+
+import org.drools.demo.model.*;
+import org.drools.demo.model.recommendations.*;
+import java.util.List;
+
+
+query getAllRecommendations( )
+    $r: Recommendation( )
+end
+
+rule "Recommend Aspiring for repeated Headache"
+    when  
+        Patient( )
+        List( size > 1 ) from collect ( Observation( text contains "headache" ) )
+    then
+        insertLogical( new MedicationRecommendation(new Medication("aspirin", "1 every 8 hs") ) );
+end
+
+rule "Recommend Appendicitis check for abdominal pain"
+    when  
+        Patient( )
+        Observation( text contains "abdominal pain" )
+    then
+        insertLogical( new ProcedureRecommendation( new Procedure("appendicitis check") ) );
+end
+
+
+
+
+
