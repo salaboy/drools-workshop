@@ -12,7 +12,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kie.version>6.3.0.Final</kie.version>
+        <kie.version>7.2.0.Final</kie.version>
         <junit.version>4.11</junit.version>
         <cdi.version>1.2</cdi.version>
         <weld.version>2.3.0.Final</weld.version>
@@ -33,6 +33,11 @@
         <dependency>
             <groupId>org.kie</groupId>
             <artifactId>kie-api</artifactId>
+            <version>${kie.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-cdi</artifactId>
             <version>${kie.version}</version>
         </dependency>
         <dependency>
